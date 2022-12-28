@@ -1,12 +1,37 @@
-const path = require('path') // to serve public dir, path는 core node module이라 install not required
-const express = require('express')
+//express 모듈 불러오기
+const express = require("express")
+const api = require("./routes")
+
+//express 사용
 const app = express()
 
-const PORT = process.env.PORT || 3000
-const publicDirectoryPath = path.join(__dirname, '../public')
+//Express 4.16.0버전 부터 body-parser의 일부 기능이 익스프레스에 내장 body-parser 연결
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-app.use(express.static(publicDirectoryPath))
+app.use("/api", api)
 
-app.listen(PORT, () => {
-    console.log(`server on port ${PORT}!`)
+const { swaggerUi, specs } = require("./swagger.js")
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
+
+/**
+ * 파라미터 변수 뜻
+ * req : request 요청
+ * res : response 응답
+ */
+
+/**
+ * @path {GET} http://localhost:3000/
+ * @description 요청 데이터 값이 없고 반환 값이 있는 GET Method
+ */
+var user = require('./routes/user/index.js');
+app.use('/user', user);
+
+app.get("/", (req, res) => {
+  //Hello World 데이터 반환
+  res.send("Hello World")
 })
+
+// http listen port 생성 서버 실행
+app.listen(3000, () => console.log("start"))
