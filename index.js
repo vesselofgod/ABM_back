@@ -27,6 +27,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
  */
 var user = require('./routes/user/index.js');
 app.use('/user', user);
+app.use('/firebase', require('./routes/user/test.js'));
 
 app.get("/", (req, res) => {
   //Hello World 데이터 반환
