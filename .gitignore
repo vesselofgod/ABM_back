@@ -1,2 +1,8 @@
 node_modules
 package-lock.json
+/.firebase
+/.firebaserc
+/firebase-debug.log
+.env
+file_private_key.json
+/functions
