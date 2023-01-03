@@ -43,8 +43,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
  */
 var user = require('./routes/user/index.js');
 var register= require('./routes/user/register.js');
+var auth = require("./routes/user/auth")
 app.use('/user', user);
 app.use('/register', register);
+app.use("/auth", auth);
 
 app.get("/", (req, res) => {
   //Hello World 데이터 반환
