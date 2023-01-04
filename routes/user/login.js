@@ -25,8 +25,6 @@ router.post("/", async (req, res) => {
                 message: "user not found"
             });
         };
-        console.log(user._id);
-        console.log(user.token);
 
         user.comparePassword(password,(err,isMatch)=>{
             if(!isMatch)
@@ -40,7 +38,7 @@ router.post("/", async (req, res) => {
             user.generateToken((err =>{
                 if(err) return res.status(400).send(err);
                 //토큰을 쿠키에 저장.
-                res.cookie('x-auth-token', user.token)
+                res.cookie('x_auth_token', user.token)
                 .status(200)
                 .json({
                     loginSuccess: true,

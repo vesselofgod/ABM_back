@@ -1,27 +1,22 @@
-// HTTP 요청 헤더에 JWT가 들어오면 검증 후 요청(req)에 사용자 정보를 할당합니다.
-const jwt = require("jsonwebtoken");
+const User = require("../model/user");
 
-module.exports = function (req, res, next) {
-  // Get token from header
-  // header에서 x-auth-token 은 token의 key 값
-  // token에는 JWT가 들어갑니다.
-  const token = req.header("x-auth-token");
+const auth=(req, res, next)=>{
+  // 인증처리
+  // client cookie에서 토큰 가져오기
+  const token=req.cookies.x_auth_token;
 
-  // 토큰이 아니라면,
-  if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
-  }
-
-  // 토큰에 대해 검증.
-  try {
-    // token 해독
-    // token을 만들 때 설정한 secret key 값 : jwtSecret
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    // req에 해독한 user 정보 생성 
-    req.user = decoded.user;
-    // 미들웨어에서 많이 사용하는 메서드로 현재에서 판단하지 않고 라우터로 넘기겠다는 의미입니다.
-    next();
-  } catch (error) {
-    res.status(401).json({ msg: "Token is not valid" });
-  }
-};
+  // token을 jwt로 decoding
+  User.findByToken(token, (err, user)=>{
+      if(err) throw err;
+      if(!user){
+          return res.json({
+              isAuth: false,
+              error: true
+          });
+      }
+      req.token=token;
+      req.user=user;
+      next();   
+  })
+}
+module.exports={auth};

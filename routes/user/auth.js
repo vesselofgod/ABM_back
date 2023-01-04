@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require("../../middleware/auth"); // middleware 불러오기
+const {auth} = require("../../middleware/auth"); // middleware 불러오기
 const User = require("../../model/user");
 const jwt = require("jsonwebtoken");
 
