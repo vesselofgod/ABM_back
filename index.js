@@ -2,7 +2,6 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
-const api = require("./routes/index.js")
 
 //express 사용
 const app = express()
@@ -25,7 +24,12 @@ const connectDB  = require("./db");
 
 connectDB()
 
+const api = require("./routes/index.js")
 app.use("/api", api)
+
+app.get("/", (req, res) => {
+  res.send("Hello World")
+})
 
 const { swaggerUi, specs } = require("./swagger.js")
 
@@ -41,17 +45,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
  * @path {GET} http://localhost:3000/
  * @description 요청 데이터 값이 없고 반환 값이 있는 GET Method
  */
-var user = require('./routes/user/index.js');
-var register= require('./routes/user/register.js');
-var auth = require("./routes/user/auth")
-app.use('/user', user);
-app.use('/register', register);
-app.use("/auth", auth);
-
-app.get("/", (req, res) => {
-  //Hello World 데이터 반환
-  res.send("Hello World")
-})
 
 // http listen port 생성 서버 실행
 const PORT = process.env.PORT || 3000;
