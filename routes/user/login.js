@@ -2,7 +2,6 @@
 const express = require("express");
 const User = require("../../model/user");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -13,11 +12,11 @@ router.get("/", (req, res) => {
 
 
 router.post("/", async (req, res) => {
-    const { email, password } = req.body;
+    const { uid, password } = req.body;
     try {
-        // email을 비교해서 user가 이미 존재하는지 확인
+        // id를 비교해서 user가 이미 존재하는지 확인
         // 존재한다면 return해서 뒤의 코드를 실행하지 않음.
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ uid });
 
         if (!user) {
             return res.status(400).json({
