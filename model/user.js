@@ -6,12 +6,7 @@ const saltRounds=10;
 
 // mongoDB에 회원정보를 저장할 스키마를 userSchema에 정의
 const userSchema = mongoose.Schema({
-    name: {
-        type: String,
-        maxlength: 50,
-        required: true,
-    },
-    email: {
+    uid:{
         type: String,
         trim: true,  // 공백을 없애주는 역할
         unique: 1,  // 똑같은 이메일을 쓰지 못하도록
@@ -19,11 +14,27 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        minlength: 5,
+        minlength: 8,
         required: true,
     },
-    image: {
-        type:String,
+    name: {
+        type: String,
+        maxlength: 50,
+        required: true,
+    },
+    sex:{
+        type: String
+    },
+    birth:{
+        type:Date
+    },
+    email: {
+        type: String,
+        trim: true,  // 공백을 없애주는 역할
+        required: true,
+    },
+    profileImg: {
+        type: String
     },
     token:{
         type:String,
