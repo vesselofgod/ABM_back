@@ -30,28 +30,23 @@ router.post("/", async (req, res) => {
             password,
         });
 
+        
+
         // bcrypt 모듈을 이용해 salt값을 부여하며 password 암호화
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        //const salt = await bcrypt.genSalt(10);
+        //user.password = await bcrypt.hash(password, salt);
 
         // 암호화된 내용까지 포함해 DB에 user를 저장.
-        await user.save();
+        //await user.save();
 
-        const payload = { // json web token 으로 변환할 데이터 정보
-            user: {
-                id: user.id,
-            },
-        };
-        // json web token 생성하여 send 해주기
-        jwt.sign(
-            payload, // 변환할 데이터
-            process.env.JWT_SECRET_KEY, // secret key 값
-            { expiresIn: "1h" }, // token의 유효시간
-            (err, token) => {
-                if (err) throw err;
-                res.send({ token }); // token 값 response 해주기
-            }
-        );
+        await user.save((err, doc)=>{
+            if(err) return res.json({
+                success: false, err
+            });
+            return res.status(200).json({
+                success: true
+            });
+        });
 
     } catch (error) {
         console.error(error.message);
