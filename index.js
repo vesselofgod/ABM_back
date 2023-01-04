@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
+const cookieParser=require('cookie-parser');
 
 //express 사용
 const app = express()
@@ -19,7 +20,7 @@ app.use(
   })
 );
 app.use(express.json({ extended: false })); 
-
+app.use(cookieParser());
 const connectDB  = require("./db");
 
 connectDB()
