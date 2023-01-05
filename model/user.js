@@ -45,7 +45,7 @@ const userSchema = mongoose.Schema({
     minlength: 10,
   },
   interest_region: {
-    type: Array,
+    type: String,
   },
   interest_hobby: {
     type: Array,

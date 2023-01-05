@@ -29,9 +29,7 @@ router.post("/setProfile", async (req, res) => {
     hobby1,
     hobby2,
     hobby3,
-    region1,
-    region2,
-    region3,
+    region1
   } = req.body;
   let isSuccess;
   if (isSuccess) {
