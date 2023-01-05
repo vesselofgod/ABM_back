@@ -38,10 +38,10 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
+    unique: 1
   },
   description: {
     type: String,
-    required: true,
     minlength: 10,
   },
   interest_region: {

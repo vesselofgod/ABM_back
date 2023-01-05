@@ -5,6 +5,7 @@ const user =require("./user/index.js");
 const register = require("./user/register.js");
 const auth = require("./user/auth.js");
 const login = require("./user/login.js");
+const profile = require("./user/profile.js")
 
 /**
  * @swagger
@@ -175,4 +176,60 @@ router.use("/auth",auth)
  *   description: 유저 로그인
  */
 router.use("/login",login)
+
+/**
+ * @swagger
+ * tags:
+ *   name: profile
+ *   description: 유저 로그인
+ * paths:
+*  /api/profile/checkUsernicknameExist:
+*   post:
+*    summary: "유저 닉네임 중복확인요청"
+*    description: "유저 닉네임 중복확인요청"
+*    tags: [profile]
+*    requestBody:
+*      description: "중복을 확인할 유저 닉네임 "
+*      required: true
+*      content:
+*        application/json:
+*          schema:
+*            type: object
+*            example:
+*              {
+*                 "nickname":"abcd",
+*              }
+*            properties:
+*              nickname:
+*                type: string
+*                description: "유저 닉네임"
+*    responses:
+*      "200":
+*        description: 닉네임이 중복되지 않았을 때
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              properties:
+*                duplication:
+*                  type: boolean
+*                  example: false
+*      "400":
+*        description: 닉네임이 중복되었을때
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              properties:
+*                duplication:
+*                  type: boolean
+*                  example: true
+*                error:
+*                  type: object
+*                  example: { msg: "Nickname already exists" }
+*
+*/
+router.use("/profile",profile)
+
+
 module.exports = router;

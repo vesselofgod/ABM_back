@@ -1,9 +1,8 @@
 const express = require("express");
-const User = require("../../model/user");
 const router = express.Router();
 
-const upload = require("../../middleware/upload");
 const dbConfig = require("../../config/db.config");
+const User = require("../../model/user");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -44,3 +43,5 @@ router.post("/setProfile", async (req, res) => {
     success: false,
   });
 });
+
+module.exports = router;
