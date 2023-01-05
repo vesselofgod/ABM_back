@@ -26,6 +26,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "firebase-functions": "^4.1.1",
+    "iamport": "^0.3.4",
+    "iamport-rest-client-nodejs": "^0.9.11",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.2",

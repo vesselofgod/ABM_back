@@ -4,7 +4,13 @@ const User = require("../../model/user");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Iamport = require("iamport-rest-client-nodejs");
 require("dotenv").config();
+
+const iamport = new Iamport({
+  apiKey: process.env.IAMPORT_API_KEY,
+  apiSecret: process.env.IAMPORT_API_SECRET_KEY,
+});
 
 router.get("/", (req, res) => {
   //Hello World 데이터 반환
@@ -23,6 +29,29 @@ router.post("/checkUserIdExist", async (req, res) => {
   return res.status(200).json({
     duplication: false,
   });
+});
+
+router.post("/certification", async (iamport) => {
+  /* 휴대폰 본인인증 정보 조회 */
+  const { imp_uid } = iamport.body;
+
+  const getCertification = Iamport.Request.Certifications.getCertification({
+    imp_uid: imp_uid,
+  });
+  await getCertification
+    .request(iamport)
+    .then((response) => console.log("response: ", response.data))
+    .catch((error) => console.log("error: ", error.response.data));
+
+  /* 휴대폰 본인인증 정보 삭제 */
+  const deleteCertification =
+    Iamport.Request.Certifications.deleteCertification({
+      imp_uid: imp_uid,
+    });
+
+  // await deleteCertification.request(iamport)
+  // .then(response => console.log('response: ', response.data))
+  // .catch(error => console.log('error: ', error.response.data));
 });
 
 router.post("/", async (req, res) => {
