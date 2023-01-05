@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const Iamport = require("iamport-rest-client-nodejs");
 require("dotenv").config();
 
-const iamport = new Iamport({
+const iamport = new Iamport.Iamport({
   apiKey: process.env.IAMPORT_API_KEY,
   apiSecret: process.env.IAMPORT_API_SECRET_KEY,
 });
@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
 
     await user.save((err, doc) => {
       if (err)
-        return res.status(400).json({
+        return res.status(401).json({
           success: false,
           err,
         });
