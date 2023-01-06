@@ -15,6 +15,13 @@ const regionSchema = mongoose.Schema({
   },
 });
 
+regionSchema.methods.getRegions = function (callback) {
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return callback(err);
+    callback(null, isMatch);
+  });
+};
+
 // 데이터베이스 모델을 정의
 const region = mongoose.model("region", regionSchema);
 

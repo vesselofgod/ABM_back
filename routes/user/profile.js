@@ -10,6 +10,27 @@ const { json } = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 
+
+router.get("/setRegion", async (req, res) => {
+  readXlsxFile("city.xlsx").then(async (rows) => {
+    for (let i = 0; i < rows.length; i++) {
+      if (i !== 0) {
+        region = new Region({
+          region_code: rows[i][0],
+          region: rows[i][1],
+          district: rows[i][2],
+        });
+        await region.save((err, doc) => {
+          if (err)
+            console.log(err)
+        });
+      };
+    }
+  });
+  readXlsxFile("city.xlsx");
+});
+
+
 router.get("/", async (req, res) => {
   try {
     let regions = await Region.find();
@@ -70,27 +91,3 @@ router.post("/setProfile", async (req, res) => {
 
 module.exports = router;
 
-/*
-router.get("/setRegion", async (req, res) => {
-  readXlsxFile("city.xlsx").then(async (rows) => {
-    console.log(rows);
-    let jsonData = [];
-    for (let i = 0; i < rows.length; i++) {
-      if (i !== 0) {
-        region = new Region({
-          region_code: rows[i][0],
-          region: rows[i][1],
-          district: rows[i][2],
-        });
-        await region.save((err, doc) => {
-          if (err)
-            console.log(err)
-        });
-      };
-    // user가 존재하지 않으면 새로운 user에 대해서 DB에 추가
-    }
-  });
-  readXlsxFile("city.xlsx");
-  res.send("hellp");
-});
-*/
