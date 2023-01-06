@@ -6,3 +6,4 @@ package-lock.json
 .env
 file_private_key.json
 /functions
+/config
