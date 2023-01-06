@@ -36,10 +36,6 @@ const userSchema = mongoose.Schema({
   certificationKey:{
     type: String,
   },
-  setProfile:{
-    type: Boolean,
-    default: false,
-  },
   profileImg: {
     type: String,
   },

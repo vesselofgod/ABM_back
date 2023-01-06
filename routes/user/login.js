@@ -36,10 +36,17 @@ router.post("/", async (req, res) => {
       user.generateToken((err) => {
         if (err) return res.status(400).send(err);
         //토큰을 쿠키에 저장.
+        let setProfile = null;
+        if(!user.nickname){
+          setProfile=false;
+        }
+        else{
+          setProfile=true
+        }
         res.cookie("x_auth_token", user.token).status(200).json({
           loginSuccess: true,
           token: user.token,
-          setProfile: user.setProfile,
+          setProfile: setProfile,
         });
       });
     });
