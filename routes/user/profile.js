@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const readXlsxFile = require("read-excel-file/node");
-const Region = require("../../model/region");
+const Region = require("../../model/region").region;
+const getRegions = require("../../model/region").getRegions;
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const { Console } = require("console");
@@ -10,46 +11,30 @@ const { json } = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 
-
 router.get("/setRegion", async (req, res) => {
   readXlsxFile("city.xlsx").then(async (rows) => {
     for (let i = 0; i < rows.length; i++) {
       if (i !== 0) {
-        region = new Region({
+        let region = new Region({
           region_code: rows[i][0],
           region: rows[i][1],
           district: rows[i][2],
         });
         await region.save((err, doc) => {
-          if (err)
-            console.log(err)
+          if (err) console.log(err);
         });
-      };
+      }
     }
   });
   readXlsxFile("city.xlsx");
 });
 
-
 router.get("/", async (req, res) => {
   try {
-    let regions = await Region.find();
-    let jsonData = {};
-    for (let i = 0; i < regions.length; i++) {
-      if (i !== 0) {
-        if (!jsonData.hasOwnProperty(regions[i].region)) {
-          jsonData[regions[i].region] = [];
-        }
-        jsonData[regions[i].region].push({
-          label: regions[i].district,
-          code: regions[i].region_code,
-        });
-      }
-    }
-    console.log(jsonData);
+    let regions = await getRegions();
     return res.status(200).json({
       success: true,
-      region_data: jsonData,
+      region_data: regions,
     });
   } catch (err) {
     console.log(err);
@@ -90,4 +75,3 @@ router.post("/setProfile", async (req, res) => {
 });
 
 module.exports = router;
-
