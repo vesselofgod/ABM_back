@@ -33,6 +33,9 @@ const userSchema = mongoose.Schema({
     trim: true, // 공백을 없애주는 역할
     required: true,
   },
+  certificationKey:{
+    type: String,
+  },
   profileImg: {
     type: String,
   },
@@ -86,7 +89,6 @@ userSchema.methods.generateToken = function (callback) {
   const token = jwt.sign(user._id.toHexString(), process.env.JWT_SECRET_KEY);
 
   user.token = token;
-  console.log(user.token);
 
   user.save(function (err, user) {
     if (err) {
