@@ -78,7 +78,7 @@ router.post("/certification", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { uid, password, name, sex, birth, email, unique_key } = req.body;
+  const { uid, password, name, sex, birth, email, certificationKey } = req.body;
 
   try {
     // email을 비교해서 user가 이미 존재하는지 확인
@@ -99,7 +99,7 @@ router.post("/", async (req, res) => {
       sex,
       birth,
       email,
-      unique_key,
+      certificationKey,
     });
 
     await user.save((err, doc) => {
