@@ -38,7 +38,8 @@ router.post("/", async (req, res) => {
         //토큰을 쿠키에 저장.
         res.cookie("x_auth_token", user.token).status(200).json({
           loginSuccess: true,
-          userId: user._id,
+          token: user.token,
+          setProfile: user.setProfile,
         });
       });
     });
