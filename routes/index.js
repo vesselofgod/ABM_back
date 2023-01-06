@@ -156,8 +156,73 @@ router.use("/user", user)
 *                error:
 *                  type: object
 *                  example: { msg: "User already exists" }
+*/
+/**
+* @swagger
+* paths:
+*  /api/register/certification:
+*   post:
+*    summary: "휴대전화로 유저 본인확인"
+*    description: "휴대전화로 유저 본인확인"
+*    tags: [register]
+*    requestBody:
+*      description: "인증시 발생하는 imp_uid를 통해서 유저의 인증상태를 확인"
+*      required: true
+*      content:
+*        application/json:
+*          schema:
+*            type: object
+*            example:
+*              {
+*                 "imp_uid":"imp_891638747369",
+*              }
+*            properties:
+*              imp_uid:
+*                type: string
+*                description: "인증 시 발생하는 uid로, 이를 통해서 유저의 인증상태를 확인할 수 있다."
+*    responses:
+*      "200":
+*        description: 정상적으로 유저인증 완료되었을 때.
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              properties:
+*                success:
+*                  type: boolean
+*                  example: true
+*                unique_key:
+*                  type: string
+*                  example: 'l0o4Lpwo/Yi9POjpb1w3O3tdfWGF'
+*      "400":
+*        description: 인증이 완료되지 않은 경우
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              properties:
+*                success:
+*                  type: boolean
+*                  example: false
+*                error:
+*                  type: object
+*                  example: { msg: "User with incomplete certification" }
+*      "401":
+*        description: unique key가 이미 있는 경우 -> 동일한 유저의 중복가입 방지
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              properties:
+*                success:
+*                  type: boolean
+*                  example: false
+*                error:
+*                  type: object
+*                  example: { msg: "User already signed up" }
 *
  */
+
 router.use("/register", register)
 
 /**
