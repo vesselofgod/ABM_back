@@ -6,7 +6,7 @@ const dbConfig = require("../../config/db.config");
 
 const url = dbConfig.url;
 
-const baseUrl = "http://localhost:3000/files/";
+const baseUrl = "http://localhost:3000/api/files/";
 
 const mongoClient = new MongoClient(url);
 
@@ -63,6 +63,8 @@ const getListFiles = async (req, res) => {
     });
   }
 };
+
+
 
 const download = async (req, res) => {
   try {
