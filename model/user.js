@@ -91,9 +91,26 @@ userSchema.methods.comparePassword = function (plainPassword, callback) {
 
 userSchema.methods.generateToken = function (callback) {
   const user = this;
-
-  const token = jwt.sign(user._id.toHexString(), process.env.JWT_SECRET_KEY);
-
+  const payload = {
+    user: {
+        _id: user._id,
+        uid: user.uid,
+        name: user.name,
+        sex: user.sex,
+        birth:user.birth,
+        email:user.email,
+        certificationKey:user.certificationKey,
+        profileImg:user.profileImg,
+        nickname: user.nickname,
+        description:user.description,
+        interest_region:user.interest_region,
+        hobby1:user.hobby1,
+        hobby2:user.hobby2,
+        hobby3:user.hobby3,
+    },
+  };
+  const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
+  
   user.token = token;
 
   user.save(function (err, user) {
@@ -108,7 +125,7 @@ userSchema.methods.generateToken = function (callback) {
 userSchema.statics.findByToken = function (token, callback) {
   const user = this;
   jwt.verify(token, process.env.JWT_SECRET_KEY, function (err, decoded) {
-    user.findOne({ _id: decoded, token: token }, function (err, user) {
+    user.findOne({ id: decoded, token: token }, function (err, user) {
       if (err) return callback(err);
       callback(null, user);
     });
