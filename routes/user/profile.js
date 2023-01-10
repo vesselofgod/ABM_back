@@ -5,6 +5,7 @@ const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
+const upload = require("../../middleware/s3");
 const { Console } = require("console");
 const { json } = require("body-parser");
 
@@ -59,19 +60,41 @@ router.post("/checkUserNicknameExist", async (req, res) => {
   });
 });
 
-router.post("/setProfile", async (req, res) => {
-  const { profileImg, nickname, description, hobby1, hobby2, hobby3, region } =
-    req.body;
+router.post("/setProfile", upload.single("image"), async (req, res, next) => {
+  try {
+    const { uid, nickname, description, hobby1, hobby2, hobby3, region } =
+      req.body;
+    const profileImg = req.file;
 
-  let isSuccess;
-  if (isSuccess) {
+    if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
+      return res.status(401).json({
+        success: false,
+        errors: [{ msg: "Selected hobbies are duplicated." }],
+      });
+    }
+
+    await User.updateOne(
+      { uid: uid },
+      {
+        nickname: nickname,
+        description: description,
+        profileImg: profileImg.location,
+        hobby1: hobby1,
+        hobby2: hobby2,
+        hobby3: hobby3,
+        region: region,
+      }
+    );
+
     return res.status(200).json({
       success: true,
     });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      errors: [{ msg: error }],
+    });
   }
-  return res.status(400).json({
-    success: false,
-  });
 });
 
 module.exports = router;

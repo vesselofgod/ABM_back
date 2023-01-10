@@ -50,8 +50,14 @@ const userSchema = mongoose.Schema({
   interest_region: {
     type: String,
   },
-  interest_hobby: {
-    type: Array,
+  hobby1: {
+    type: String,
+  },
+  hobby2: {
+    type: String,
+  },
+  hobby3: {
+    type: String,
   },
   token: {
     type: String,
