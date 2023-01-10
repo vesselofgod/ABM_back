@@ -20,21 +20,21 @@ router.post("/", async (req, res) => {
     if (!user) {
       return res.status(400).json({
         loginSuccess: false,
-        message: "user not found",
+        message: "login failed",
       });
     }
 
     user.comparePassword(password, (err, isMatch) => {
       if (!isMatch)
-        return res.json({
+        return res.status(400).json({
           loginSuccess: false,
-          message: "Wrong password",
+          message: "login failed",
         });
       //matched, token generation.
 
       //토큰 생성하는 부분에서 에러 발생
       user.generateToken((err) => {
-        if (err) return res.status(400).send(err);
+        if (err) return res.status(401).send(err);
         //토큰을 쿠키에 저장.
         let setProfile = null;
         if(!user.nickname){
