@@ -61,9 +61,10 @@ router.post("/checkUserNicknameExist", async (req, res) => {
 
 router.post("/setProfile", upload.single("image"), async (req, res, next) => {
   try {
-    const { uid, nickname, description, hobby1, hobby2, hobby3, region } =
+    const { nickname, description, hobby1, hobby2, hobby3, region } =
       req.body;
     const profileImg = req.file;
+    const token=req.header('authorization')
 
     if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
       return res.status(401).json({
@@ -72,8 +73,20 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
       });
     }
 
+    // token을 jwt로 decoding
+    User.findByToken(token, (err, userinfo)=>{
+        if(err) throw err;
+        if(!userinfo){
+            return res.json({
+                isAuth: false,
+                error: true
+            });
+        }
+        user=userinfo;
+    })
+
     await User.updateOne(
-      { uid: uid },
+      { uid: user.uid },
       {
         nickname: nickname,
         description: description,
@@ -84,12 +97,21 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
         region: region,
       }
     );
-
-    return res.status(200).json({
-      success: true,
+    
+    user.generateToken((err) => {
+      if (err) {
+        return res.status(400).send(err)
+      }
+      else{
+        console.log(user.token);
+        return res.status(200).json({
+          success: true,
+          token: user.token,
+        });
+      }
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
       errors: [{ msg: error }],
     });
