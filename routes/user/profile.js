@@ -38,10 +38,9 @@ router.get("/", async (req, res) => {
       region_data: regions,
     });
   } catch (err) {
-    console.log(err);
     return res.status(400).json({
       success: false,
-      err,
+      errors: [{ msg: err }],
     });
   }
 });
