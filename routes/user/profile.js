@@ -6,8 +6,6 @@ const getRegions = require("../../model/region").getRegions;
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const upload = require("../../middleware/s3");
-const { Console } = require("console");
-const { json } = require("body-parser");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -64,7 +62,7 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
     const { nickname, description, hobby1, hobby2, hobby3, region } =
       req.body;
     const profileImg = req.file;
-    const token=req.header('authorization')
+    const token=req.header('authorization').split(' ')[1];
 
     if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
       return res.status(401).json({
@@ -103,7 +101,6 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
         return res.status(400).send(err)
       }
       else{
-        console.log(user.token);
         return res.status(200).json({
           success: true,
           token: user.token,

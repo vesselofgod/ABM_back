@@ -8,7 +8,6 @@ const jwt = require("jsonwebtoken");
 router.get("/", auth, async (req, res) => {
   try {
     // auth 미들웨어에서 생성해준 req.user를 사용하여 DB에서 user 탐색. 패스워드에 대한 내용은 제외합니다.
-    console.log(req.user.id, req.user.password);
     const user = await User.findById(req.user.id).select("-password");
     res.json(user); // 응답에 패스워드 정보를 제외한 사용자 정보 넣기
   } catch (error) {
