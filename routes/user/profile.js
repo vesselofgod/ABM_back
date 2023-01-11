@@ -7,6 +7,7 @@ const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const upload = require("../../middleware/s3");
 const { none } = require("../../middleware/s3");
+const utils = require("../../utils.js");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -74,20 +75,12 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
       });
     }
 
-    // token을 jwt로 decoding
-    User.findByToken(token, (err, userinfo)=>{
-        if(err) throw err;
-        if(!userinfo){
-            return res.json({
-                isAuth: false,
-                error: true
-            });
-        }
-        user=userinfo;
-    })
+    // token parsing
+    const user_data = utils.parseJWTPayload(token);
+    const user_key = user_data.user._id
 
     await User.updateOne(
-      { uid: user.uid },
+      { _id: user_key },
       {
         nickname: nickname,
         description: description,
@@ -98,7 +91,9 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
         interest_region: region,
       }
     );
-    
+
+    const user = await User.findOne({ _id: user_key });
+
     user.generateToken((err) => {
       if (err) {
         return res.status(400).send(err)
