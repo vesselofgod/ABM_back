@@ -6,6 +6,7 @@ const getRegions = require("../../model/region").getRegions;
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const upload = require("../../middleware/s3");
+const { none } = require("../../middleware/s3");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
@@ -45,7 +46,7 @@ router.get("/", async (req, res) => {
 
 router.post("/checkUserNicknameExist", async (req, res) => {
   const nickname = req.body.nickname;
-  let user = await User.findOne({ nickname });
+  let user = await User.findOne({ nickname:nickname });
   if (user) {
     return res.status(400).json({
       errors: [{ msg: "Nickname already exists" }],
@@ -65,6 +66,8 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
     const token=req.header('authorization').split(' ')[1];
 
     if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
+      //TODO : 한개만 넣었을 떄 2개가 none이라서 생기는 문제 해결
+
       return res.status(401).json({
         success: false,
         errors: [{ msg: "Selected hobbies are duplicated." }],
@@ -92,7 +95,7 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
         hobby1: hobby1,
         hobby2: hobby2,
         hobby3: hobby3,
-        region: region,
+        interest_region: region,
       }
     );
     

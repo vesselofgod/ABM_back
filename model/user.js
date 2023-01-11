@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
+const Region = require("./region").region;
 
 // mongoDB에 회원정보를 저장할 스키마를 userSchema에 정의
 const userSchema = mongoose.Schema({
@@ -89,8 +90,11 @@ userSchema.methods.comparePassword = function (plainPassword, callback) {
   });
 };
 
-userSchema.methods.generateToken = function (callback) {
+userSchema.methods.generateToken = async function (callback) {
   const user = this;
+  const region_code =  this.interest_region;
+  let region = await Region.findOne({ region_code:region_code });
+  console.log(region);
   const payload = {
     user: {
         _id: user._id,
@@ -107,6 +111,8 @@ userSchema.methods.generateToken = function (callback) {
         hobby1:user.hobby1,
         hobby2:user.hobby2,
         hobby3:user.hobby3,
+        region1:region.region,
+        region2:region.district,
     },
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
