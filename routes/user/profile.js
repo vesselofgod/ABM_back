@@ -67,12 +67,14 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
     const token=req.header('authorization').split(' ')[1];
 
     if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
-      //TODO : 한개만 넣었을 떄 2개가 none이라서 생기는 문제 해결
+      const empty_cnt = [hobby1, hobby2, hobby3].reduce((cnt, item) => item ? cnt : cnt + 1, 0);
 
-      return res.status(401).json({
-        success: false,
-        errors: [{ msg: "Selected hobbies are duplicated." }],
-      });
+      if(empty_cnt < 2){
+        return res.status(401).json({
+          success: false,
+          errors: [{ msg: "Selected hobbies are duplicated." }],
+        });
+      }
     }
 
     // token parsing
