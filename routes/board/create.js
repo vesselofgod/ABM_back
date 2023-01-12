@@ -25,6 +25,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       region3,
       date,
       TO,
+      regularity,
     } = req.body;
     const images = req.files ?? [];
     const token = req.header("authorization").split(" ")[1];
@@ -90,6 +91,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       region3: region3,
       date: date,
       TO: TO,
+      regularity:regularity,
     });
 
     for (let i = 0; i < images.length; i++) {

@@ -1,7 +1,7 @@
 // auto-id-setter.js
 
-const { Schema, Mongoose } = require('mongoose');
-const AutoIncrementFactory = require('mongoose-sequence');
+const { Schema, Mongoose } = require("mongoose");
+const AutoIncrementFactory = require("mongoose-sequence");
 
 /**
  * 해당 스키마에 자동 증가 필드를 추가시켜줍니다.

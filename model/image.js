@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 // mongoDB에 게시글에 저장할 이미지 스키마를 imageSchema에 정의
 const imageSchema = mongoose.Schema({
-  pid: {
+  fid: {
     type: String,
   },
   URL: {
