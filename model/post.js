@@ -5,18 +5,31 @@ const mongoose = require("mongoose");
 const postSchema = mongoose.Schema({
   title: {
     type: String,
+    minlength: 5,
   },
   content: {
     type: String,
-    minlength: 20,
+    minlength: 30,
   },
   author: {
     type: String,
   },
-  category: {
-    type: Array,
+  category1: {
+    type: String,
   },
-  region: {
+  category2: {
+    type: String,
+  },
+  category3: {
+    type: String,
+  },
+  region1: {
+    type: String,
+  },
+  region2: {
+    type: String,
+  },
+  region3: {
     type: String,
   },
   state: {
