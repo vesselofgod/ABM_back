@@ -91,7 +91,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       region3: region3,
       date: date,
       TO: TO,
-      regularity:regularity,
+      regularity: regularity,
     });
 
     for (let i = 0; i < images.length; i++) {
@@ -109,13 +109,17 @@ router.post("/", upload.array("images", 5), async (req, res) => {
     }
 
     await feed.save((err, doc) => {
-      if (err)
+      if (err) {
+        console.log(err);
         return res.status(400).json({
           success: false,
           error: [{ msg: "feed upload failed!" }],
         });
+      }
+
       return res.status(200).json({
         success: true,
+        fid: feed.fid,
       });
     });
   } catch (err) {
