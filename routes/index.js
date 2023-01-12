@@ -484,12 +484,12 @@ router.use("/files", uploadController.getListFiles);
 router.use("/files:name", uploadController.download);
 
 const createpage = require("./board/create.js");
-//const readpage = require("./board/read.js");
+const readpage = require("./board/read.js");
 
 
 
 router.use("/create", createpage);
-//router.use("/read", readpage);
+router.use("/read", readpage);
 
 /*
 const deletepage = require("./board/delete.js");

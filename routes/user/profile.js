@@ -47,7 +47,7 @@ router.get("/", async (req, res) => {
 
 router.post("/checkUserNicknameExist", async (req, res) => {
   const nickname = req.body.nickname;
-  let user = await User.findOne({ nickname:nickname });
+  let user = await User.findOne({ nickname: nickname });
   if (user) {
     return res.status(400).json({
       errors: [{ msg: "Nickname already exists" }],
@@ -61,15 +61,17 @@ router.post("/checkUserNicknameExist", async (req, res) => {
 
 router.post("/setProfile", upload.single("image"), async (req, res, next) => {
   try {
-    const { nickname, description, hobby1, hobby2, hobby3, region } =
-      req.body;
+    const { nickname, description, hobby1, hobby2, hobby3, region } = req.body;
     const profileImg = req.file;
-    const token=req.header('authorization').split(' ')[1];
+    const token = req.header("authorization").split(" ")[1];
 
     if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
-      const empty_cnt = [hobby1, hobby2, hobby3].reduce((cnt, item) => item ? cnt : cnt + 1, 0);
+      const empty_cnt = [hobby1, hobby2, hobby3].reduce(
+        (cnt, item) => (item ? cnt : cnt + 1),
+        0
+      );
 
-      if(empty_cnt < 2){
+      if (empty_cnt < 2) {
         return res.status(401).json({
           success: false,
           errors: [{ msg: "Selected hobbies are duplicated." }],
@@ -79,7 +81,7 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
 
     // token parsing
     const user_data = utils.parseJWTPayload(token);
-    const user_key = user_data.user._id
+    const user_key = user_data.user._id;
 
     await User.updateOne(
       { _id: user_key },
@@ -98,9 +100,8 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
 
     user.generateToken((err) => {
       if (err) {
-        return res.status(400).send(err)
-      }
-      else{
+        return res.status(400).send(err);
+      } else {
         return res.status(200).json({
           success: true,
           token: user.token,
