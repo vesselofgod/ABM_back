@@ -1,5 +1,5 @@
 const express = require("express");
-const Post = require("../../model/post");
+const Feed = require("../../model/feed");
 const Image = require("../../model/image");
 const Scrap = require("../../model/scrap");
 const utils = require("../../utils.js");
@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
 
 router.post("/", upload.array("images", 5), async (req, res) => {
   try {
-    const { title, content, category1, category2, category3, region1, region2, region3, state, date, TO } = req.body;
+    const { title, content, category1, category2, category3, region1, region2, region3, date, TO } = req.body;
     const images = req.files ?? [];
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
@@ -60,7 +60,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
     }
   
 
-    let post = new Post({
+    let feed = new Feed({
       title: title,
       content: content,
       author: user_data.user.nickname,
@@ -70,14 +70,13 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       region1: region1,
       region2: region2,
       region3: region3,
-      state: state,
       date: date,
       TO: TO,
     });
     
     for(let i=0;i<images.length;i++){
       let image = new Image({
-        pid:post._id,
+        pid:feed._id,
         URL:images[i].location,
       })
       await image.save((err, doc) => {
@@ -89,17 +88,18 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       });
     }
 
-    await post.save((err, doc) => {
+    await feed.save((err, doc) => {
       if (err)
         return res.status(400).json({
           success: false,
-          error: [{ msg: "post upload failed!" }],
+          error: [{ msg: "feed upload failed!" }],
         });
       return res.status(200).json({
         success: true,
       });
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       err,
