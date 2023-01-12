@@ -6,7 +6,7 @@ const scrapSchema = mongoose.Schema({
   uid: {
     type: String,
   },
-  pid: {
+  fid: {
     type: String,
   },
   isScrapped: {

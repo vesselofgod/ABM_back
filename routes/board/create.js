@@ -14,18 +14,33 @@ router.get("/", (req, res) => {
 
 router.post("/", upload.array("images", 5), async (req, res) => {
   try {
-    const { title, content, category1, category2, category3, region1, region2, region3, date, TO } = req.body;
+    const {
+      title,
+      content,
+      category1,
+      category2,
+      category3,
+      region1,
+      region2,
+      region3,
+      date,
+      TO,
+    } = req.body;
     const images = req.files ?? [];
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
 
-    if(category1==undefined && category2==undefined && category3==undefined)
+    if (
+      category1 == undefined &&
+      category2 == undefined &&
+      category3 == undefined
+    )
       return res.status(402).json({
         success: false,
         error: [{ msg: "Please input categories" }],
       });
 
-    if(region1==undefined && region2==undefined && region3==undefined)
+    if (region1 == undefined && region2 == undefined && region3 == undefined)
       return res.status(402).json({
         success: false,
         error: [{ msg: "Please input regions" }],
@@ -45,7 +60,11 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       }
     }
 
-    if (category1==category2 ||category2==category3 || category1==category3){
+    if (
+      category1 == category2 ||
+      category2 == category3 ||
+      category1 == category3
+    ) {
       const empty_cnt = [category1, category2, category3].reduce(
         (cnt, item) => (item ? cnt : cnt + 1),
         0
@@ -58,7 +77,6 @@ router.post("/", upload.array("images", 5), async (req, res) => {
         });
       }
     }
-  
 
     let feed = new Feed({
       title: title,
@@ -73,12 +91,12 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       date: date,
       TO: TO,
     });
-    
-    for(let i=0;i<images.length;i++){
+
+    for (let i = 0; i < images.length; i++) {
       let image = new Image({
-        pid:feed._id,
-        URL:images[i].location,
-      })
+        fid: feed.fid,
+        URL: images[i].location,
+      });
       await image.save((err, doc) => {
         if (err)
           return res.status(401).json({
@@ -99,7 +117,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
       });
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       err,
