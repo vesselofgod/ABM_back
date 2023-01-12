@@ -1,8 +1,11 @@
 // models/User.js
 const mongoose = require("mongoose");
-
+const autoIdSetter = require("./auto_increment.js");
 // mongoDB에 회원정보를 저장할 스키마를 regionSchema에 정의
 const feedSchema = mongoose.Schema({
+  pid: {
+    type:Number,
+  },
   title: {
     type: String,
     minlength: 5,
@@ -50,6 +53,9 @@ const feedSchema = mongoose.Schema({
   },
 
 });
+
+
+autoIdSetter(feedSchema, mongoose, 'feed', 'pid');
 
 // 데이터베이스 모델을 정의
 const feed = mongoose.model("feed", feedSchema);
