@@ -5,7 +5,6 @@ const register = require("./user/register.js");
 const auth = require("./user/auth.js");
 const login = require("./user/login.js");
 const profile = require("./user/profile.js");
-
 /**
  * @swagger
  * tags:
@@ -355,9 +354,8 @@ router.use("/login", login);
  *
  */
 
-
 /**
-* @swagger
+ * @swagger
  * tags:
  *   name: profile
  *   description: 유저 프로필 설정 정보 제공
@@ -393,7 +391,7 @@ router.use("/login", login);
  *                error:
  *                  type: object
  *                  example: { msg: "error" }
-*/
+ */
 
 /**
  * @swagger
@@ -404,7 +402,7 @@ router.use("/login", login);
  *  /api/profile/setProfile:
  *   post:
  *    summary: "유저 프로필 설정 API"
- *    description: "유저의 프로필 설정을 위해 필요한 정보를 받아온 후, 이미지는 S3에 저장하여 URL로, 나머지는 String으로 DB에 저장."
+ *    description: "토큰을 통해 유저를 검색하고, 유저의 프로필 설정을 위해 필요한 정보를 받아온 후, 이미지는 S3에 저장하여 URL로, 나머지는 String으로 DB에 저장한다. 그 후 변경된 정보에 대한 토큰 정보와 성공여부를 반환한다."
  *    tags: [profile]
  *    requestBody:
  *      description: " 유저 프로필 설정을 위한 정보를 multipart/form-data로 받아온다. "
@@ -434,7 +432,7 @@ router.use("/login", login);
  *                description: "관심분야2"
  *              hobby3:
  *                type: string
- *                description: "관심분야3" 
+ *                description: "관심분야3"
  *    responses:
  *      "200":
  *        description: 프로필 설정이 성공적으로 완료되었을때
@@ -446,6 +444,9 @@ router.use("/login", login);
  *                success:
  *                  type: boolean
  *                  example: true
+ *                token:
+ *                  type: string
+ *                  example: eyJhbGciOiJIUfsafJ9.NjNiY2QwYmUwfsafjQyNmE2ZjQ0YTc5.Mu7K58qtGBIq0r3aAotTmmMba65uDoRRpg3nVqe1qVw
  *      "400":
  *        description: req로 받은 값을 DB에 저장하는 과정에서 에러가 발생한 경우
  *        content:
@@ -475,13 +476,26 @@ router.use("/login", login);
  *                  example: { msg: "Selected hobbies are duplicated." }
  */
 
-
-
 router.use("/profile", profile);
 
 const uploadController = require("./user/upload");
 router.use("/upload", uploadController.uploadFiles);
 router.use("/files", uploadController.getListFiles);
 router.use("/files:name", uploadController.download);
+
+const createpage = require("./board/create.js");
+//const readpage = require("./board/read.js");
+
+
+
+router.use("/create", createpage);
+//router.use("/read", readpage);
+
+/*
+const deletepage = require("./board/delete.js");
+const updatepage = require("./board/update.js");
+router.use("/delete", deletepage);
+router.use("/update", updatepage);
+*/
 
 module.exports = router;
