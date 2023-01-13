@@ -94,7 +94,6 @@ userSchema.methods.generateToken = async function (callback) {
   const user = this;
   const region_code =  this.interest_region;
   let region = await Region.findOne({ region_code:region_code });
-  console.log(region);
   const payload = {
     user: {
         _id: user._id,
@@ -111,8 +110,8 @@ userSchema.methods.generateToken = async function (callback) {
         hobby1:user.hobby1,
         hobby2:user.hobby2,
         hobby3:user.hobby3,
-        region1:region.region,
-        region2:region.district,
+        region1: region ? region.region :  "" ,
+        region2: region ? region.district : ""  ,
     },
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
