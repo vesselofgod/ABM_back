@@ -9,25 +9,32 @@ const upload = require("../../middleware/s3");
 const { none } = require("../../middleware/s3");
 const utils = require("../../utils.js");
 
+const city = require("../../city.json");
+
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 
 router.get("/setRegion", async (req, res) => {
-  readXlsxFile("city.xlsx").then(async (rows) => {
-    for (let i = 0; i < rows.length; i++) {
-      if (i !== 0) {
-        let region = new Region({
-          region_code: rows[i][0],
-          region: rows[i][1],
-          district: rows[i][2],
+  try {
+    await Promise.all(
+      city.map((item) => {
+        const region = new Region(item);
+        return region.save((err, doc) => {
+          if (err) throw err;
         });
-        await region.save((err, doc) => {
-          if (err) console.log(err);
-        });
-      }
-    }
-  });
-  readXlsxFile("city.xlsx");
+      })
+    );
+    console.log("region data inserted.");
+
+    return res.status(201).json({
+      message: "region data inserted.",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(406).json({
+      message: error,
+    });
+  }
 });
 
 router.get("/", async (req, res) => {
