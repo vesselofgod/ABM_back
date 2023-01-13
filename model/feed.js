@@ -51,6 +51,9 @@ const feedSchema = mongoose.Schema({
   regularity: {
     type: Boolean,
   },
+  thumbnail: {
+    type: String,
+  },
 });
 
 autoIdSetter(feedSchema, mongoose, "feed", "fid");
