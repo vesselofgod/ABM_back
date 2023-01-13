@@ -81,7 +81,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
       }
     }
 
-    if (feed.date > date) {
+    if (feed.date > new Date(date)) {
       return res.status(401).json({
         success: false,
         errors: [{ msg: "Invalid date input." }],

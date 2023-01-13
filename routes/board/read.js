@@ -20,8 +20,9 @@ router.get("/recruit", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
     let feeds = await Feed.find({
       author: user_data.user.nickname,
-      state: { $not: /^Deleted$/ },
+      state: "Recruiting",
     });
+
     return res.status(200).json({
       success: true,
       feedlist: feeds,
