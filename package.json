@@ -42,6 +42,7 @@
   "devDependencies": {
     "eslint": "^8.31.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "swagger-autogen": "^2.22.0",
     "swagger-jsdoc": "^6.2.7",
     "swagger-ui-express": "^4.6.0"
   }
