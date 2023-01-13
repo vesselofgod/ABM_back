@@ -46,9 +46,12 @@ router.get("/:feed_id", async (req, res) => {
       state: "Recruiting",
     });
 
+    const images = await Image.find({fid:fid});
+
     return res.status(200).json({
       success: true,
       feed: feed,
+      images: images,
     });
   } catch (err) {
     console.log(err);
