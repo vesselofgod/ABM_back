@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const readXlsxFile = require("read-excel-file/node");
 const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
 const dbConfig = require("../../config/db.config");
