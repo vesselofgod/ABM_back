@@ -485,16 +485,14 @@ router.use("/files:name", uploadController.download);
 
 const createpage = require("./board/create.js");
 const readpage = require("./board/read.js");
-
-
+const deletepage = require("./board/delete.js");
 
 router.use("/create", createpage);
 router.use("/read", readpage);
+router.use("/delete", deletepage);
 
 /*
-const deletepage = require("./board/delete.js");
 const updatepage = require("./board/update.js");
-router.use("/delete", deletepage);
 router.use("/update", updatepage);
 */
 
