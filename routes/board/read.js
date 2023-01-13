@@ -29,7 +29,7 @@ router.get("/recruit", async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(402).json({
+    return res.status(400).json({
       success: false,
       error: err,
     });
@@ -39,6 +39,24 @@ router.get("/recruit", async (req, res) => {
 router.get("/:feed_id", async (req, res) => {
   //각각의 게시판에 대한 상세한 정보를 제공함.
   //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면
+  try {
+    const fid = req.params.feed_id;
+    let feed = await Feed.findOne({
+      fid: fid,
+      state: "Recruiting",
+    });
+
+    return res.status(200).json({
+      success: true,
+      feed: feed,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      success: false,
+      error: err,
+    });
+  }
 });
 
 module.exports = router;

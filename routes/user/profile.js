@@ -2,12 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
+
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const upload = require("../../middleware/s3");
-const { none } = require("../../middleware/s3");
 const utils = require("../../utils.js");
-
 const city = require("../../city.json");
 
 const MongoClient = require("mongodb").MongoClient;
