@@ -50,9 +50,9 @@ const feedlogSchema = mongoose.Schema({
   regularity: {
     type: Boolean,
   },
-  images:{
+  images: {
     type: Array,
-  }
+  },
 });
 
 // 데이터베이스 모델을 정의

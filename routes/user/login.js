@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
   try {
     // id를 비교해서 user가 이미 존재하는지 확인
     // 존재한다면 return해서 뒤의 코드를 실행하지 않음.
-    let user = await User.findOne({ uid:uid });
+    let user = await User.findOne({ uid: uid });
 
     if (!user) {
       return res.status(400).json({
@@ -37,11 +37,10 @@ router.post("/", async (req, res) => {
         if (err) return res.status(401).send(err);
         //토큰을 쿠키에 저장.
         let setProfile = null;
-        if(!user.nickname){
-          setProfile=false;
-        }
-        else{
-          setProfile=true
+        if (!user.nickname) {
+          setProfile = false;
+        } else {
+          setProfile = true;
         }
         res.cookie("x_auth_token", user.token).status(200).json({
           loginSuccess: true,

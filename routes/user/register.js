@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 
 router.post("/checkUserIdExist", async (req, res) => {
   const uid = req.body.uid;
-  let user = await User.findOne({ uid:uid });
+  let user = await User.findOne({ uid: uid });
   if (user) {
     return res.status(400).json({
       errors: [{ msg: "User already exists" }],
@@ -57,7 +57,7 @@ router.post("/certification", async (req, res) => {
         if (!user) {
           return res.status(200).json({
             success: true,
-            unique_key:certificationsInfo.unique_key,
+            unique_key: certificationsInfo.unique_key,
           });
         } else {
           //unique key가 이미 있는 경우.-> 동일한 유저의 중복가입 방지
@@ -83,7 +83,7 @@ router.post("/", async (req, res) => {
   try {
     // email을 비교해서 user가 이미 존재하는지 확인
     // 존재한다면 return해서 뒤의 코드를 실행하지 않음.
-    let user = await User.findOne({ uid:uid });
+    let user = await User.findOne({ uid: uid });
     if (user) {
       return res.status(400).json({
         success: false,

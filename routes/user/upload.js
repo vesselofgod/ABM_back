@@ -1,4 +1,4 @@
-const multer = require('multer');
+const multer = require("multer");
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const upload = require("../../middleware/upload");
@@ -63,8 +63,6 @@ const getListFiles = async (req, res) => {
     });
   }
 };
-
-
 
 const download = async (req, res) => {
   try {

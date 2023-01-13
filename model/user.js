@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
     trim: true, // 공백을 없애주는 역할
     required: true,
   },
-  certificationKey:{
+  certificationKey: {
     type: String,
   },
   profileImg: {
@@ -42,7 +42,7 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
-    unique: 1
+    unique: 1,
   },
   description: {
     type: String,
@@ -92,30 +92,30 @@ userSchema.methods.comparePassword = function (plainPassword, callback) {
 
 userSchema.methods.generateToken = async function (callback) {
   const user = this;
-  const region_code =  this.interest_region;
-  let region = await Region.findOne({ region_code:region_code });
+  const region_code = this.interest_region;
+  let region = await Region.findOne({ region_code: region_code });
   const payload = {
     user: {
-        _id: user._id,
-        uid: user.uid,
-        name: user.name,
-        sex: user.sex,
-        birth:user.birth,
-        email:user.email,
-        certificationKey:user.certificationKey,
-        profileImg:user.profileImg,
-        nickname: user.nickname,
-        description:user.description,
-        interest_region:user.interest_region,
-        hobby1:user.hobby1,
-        hobby2:user.hobby2,
-        hobby3:user.hobby3,
-        region1: region ? region.region :  "" ,
-        region2: region ? region.district : ""  ,
+      _id: user._id,
+      uid: user.uid,
+      name: user.name,
+      sex: user.sex,
+      birth: user.birth,
+      email: user.email,
+      certificationKey: user.certificationKey,
+      profileImg: user.profileImg,
+      nickname: user.nickname,
+      description: user.description,
+      interest_region: user.interest_region,
+      hobby1: user.hobby1,
+      hobby2: user.hobby2,
+      hobby3: user.hobby3,
+      region1: region ? region.region : "",
+      region2: region ? region.district : "",
     },
   };
   const token = jwt.sign(payload, process.env.JWT_SECRET_KEY);
-  
+
   user.token = token;
 
   user.save(function (err, user) {

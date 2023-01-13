@@ -2,39 +2,39 @@
 const express = require("express");
 const cors = require("cors");
 const cookieSession = require("cookie-session");
-const cookieParser=require('cookie-parser');
+const cookieParser = require("cookie-parser");
 
 //express 사용
-const app = express()
+const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "http://localhost:3000",
 };
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 //Express 4.16.0버전 부터 body-parser의 일부 기능이 익스프레스에 내장 body-parser 연결
 app.use(
   cookieSession({
     name: "ABM-session",
     secret: "COOKIE_SECRET", // should use as secret environment variable
-    httpOnly: true
+    httpOnly: true,
   })
 );
-app.use(express.json({ extended: false })); 
+app.use(express.json({ extended: false }));
 app.use(cookieParser());
-const connectDB  = require("./db");
+const connectDB = require("./db");
 
-connectDB()
+connectDB();
 
-const api = require("./routes/index.js")
-app.use("/api", api)
+const api = require("./routes/index.js");
+app.use("/api", api);
 
 app.get("/", (req, res) => {
-  res.send("Hello World")
-})
+  res.send("Hello World");
+});
 
-const { swaggerUi, specs } = require("./swagger.js")
+const { swaggerUi, specs } = require("./swagger.js");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * 파라미터 변수 뜻

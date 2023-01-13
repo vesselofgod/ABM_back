@@ -39,6 +39,7 @@
     "routes": "^2.1.0"
   },
   "devDependencies": {
+    "eslint": "^8.31.0",
     "swagger-jsdoc": "^6.2.7",
     "swagger-ui-express": "^4.6.0"
   }
