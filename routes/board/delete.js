@@ -9,10 +9,7 @@ const router = express.Router();
 router.delete("/:fid", async (req, res) => {
   try {
     const fid = req.params.fid;
-    console.log(fid);
     await Feed.updateOne({ fid: fid }, { state: "Deleted" });
-
-    f = await Feed.findOne({ fid: fid });
     return res.status(200).json({
       success: true,
     });

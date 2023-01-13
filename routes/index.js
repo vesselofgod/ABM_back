@@ -486,14 +486,11 @@ router.use("/files:name", uploadController.download);
 const createpage = require("./board/create.js");
 const readpage = require("./board/read.js");
 const deletepage = require("./board/delete.js");
+const updatepage = require("./board/update.js");
 
 router.use("/create", createpage);
 router.use("/read", readpage);
 router.use("/delete", deletepage);
-
-/*
-const updatepage = require("./board/update.js");
 router.use("/update", updatepage);
-*/
 
 module.exports = router;
