@@ -1,0 +1,34 @@
+[
+  {
+    "uid": "test1",
+    "password": "$2b$10$GTKeq4Irb7wv77ATVP0WH.PWxPkc9P7cxeOoY4hdrm48CUChiszEu",
+    "name": "testuser1",
+    "sex": "male",
+    "birth": "2000-01-01",
+    "email": "test1@gmail.com",
+    "certificationKey": "11111111",
+    "profileImg": "https://media.newyorker.com/photos/5cdf1ad7339acf8247bfc768/1:1/w_1525,h_1525,c_limit/Richard-JohnWick.jpg",
+    "nickname": "nickname1",
+    "description": "111111111111111",
+    "interest_region": "1111000000",
+    "hobby1": "0",
+    "hobby2": "1",
+    "hobby3": null
+  },
+  {
+    "uid": "test2",
+    "password": "$2b$10$GTKeq4Irb7wv77ATVP0WH.PWxPkc9P7cxeOoY4hdrm48CUChiszEu",
+    "name": "testuser2",
+    "sex": "female",
+    "birth": "1990-07-01",
+    "email": "test2@naver.com",
+    "certificationKey": "22222222",
+    "profileImg": "https://i.scdn.co/image/ab6761610000e5ebcdce7620dc940db079bf4952",
+    "nickname": "nickname2",
+    "description": "222222222222222",
+    "interest_region": "2871000000",
+    "hobby1": "4",
+    "hobby2": null,
+    "hobby3": "3"
+  }
+]

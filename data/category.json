@@ -1,0 +1,42 @@
+[
+  {
+    "category_code": "0",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/0.jpg"
+  },
+  {
+    "category_code": "1",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/1.jpg"
+  },
+  {
+    "category_code": "2",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/2.jpg"
+  },
+  {
+    "category_code": "3",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/3.jpg"
+  },
+  {
+    "category_code": "4",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/4.jpg"
+  },
+  {
+    "category_code": "5",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/5.jpg"
+  },
+  {
+    "category_code": "6",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/6.jpg"
+  },
+  {
+    "category_code": "7",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/7.jpg"
+  },
+  {
+    "category_code": "8",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/8.jpg"
+  },
+  {
+    "category_code": "9",
+    "default_img": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/9.jpg"
+  }
+]
