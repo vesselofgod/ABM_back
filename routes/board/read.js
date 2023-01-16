@@ -40,18 +40,23 @@ router.get("/:feed_id", async (req, res) => {
   //각각의 게시판에 대한 상세한 정보를 제공함.
   //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면
   try {
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
     const fid = req.params.feed_id;
+    let isAuthor = false;
     let feed = await Feed.findOne({
       fid: fid,
       state: "Recruiting",
     });
+    if (user_data.user.nickname == feed.author) isAuthor = true;
 
-    const images = await Image.find({fid:fid});
+    const images = await Image.find({ fid: fid });
 
     return res.status(200).json({
       success: true,
       feed: feed,
       images: images,
+      isAuthor: isAuthor,
     });
   } catch (err) {
     console.log(err);
