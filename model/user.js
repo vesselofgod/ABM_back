@@ -42,7 +42,6 @@ const userSchema = mongoose.Schema({
   },
   nickname: {
     type: String,
-    unique: 1,
   },
   description: {
     type: String,
@@ -51,14 +50,8 @@ const userSchema = mongoose.Schema({
   interest_region: {
     type: String,
   },
-  hobby1: {
-    type: String,
-  },
-  hobby2: {
-    type: String,
-  },
-  hobby3: {
-    type: String,
+  hobbies: {
+    type: Array,
   },
   token: {
     type: String,
@@ -107,9 +100,7 @@ userSchema.methods.generateToken = async function (callback) {
       nickname: user.nickname,
       description: user.description,
       interest_region: user.interest_region,
-      hobby1: user.hobby1,
-      hobby2: user.hobby2,
-      hobby3: user.hobby3,
+      hobbies: user.hobbies,
       region1: region ? region.region : "",
       region2: region ? region.district : "",
     },

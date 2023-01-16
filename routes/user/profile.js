@@ -67,37 +67,27 @@ router.post("/checkUserNicknameExist", async (req, res) => {
 
 router.post("/setProfile", upload.single("image"), async (req, res, next) => {
   try {
-    const { nickname, description, hobby1, hobby2, hobby3, region } = req.body;
+    const { nickname, description, hobbies, region } = req.body;
     const profileImg = req.file;
     const token = req.header("authorization").split(" ")[1];
-
-    if (hobby1 == hobby2 || hobby1 == hobby3 || hobby2 == hobby3) {
-      const empty_cnt = [hobby1, hobby2, hobby3].reduce(
-        (cnt, item) => (item ? cnt : cnt + 1),
-        0
-      );
-
-      if (empty_cnt < 2) {
-        return res.status(401).json({
-          success: false,
-          errors: [{ msg: "Selected hobbies are duplicated." }],
-        });
-      }
+    const hobbiesset = new Set(hobbies);
+    if (hobbies.length != hobbiesset.size) {
+      return res.status(401).json({
+        success: false,
+        errors: [{ msg: "Selected hobbies are duplicated." }],
+      });
     }
 
     // token parsing
     const user_data = utils.parseJWTPayload(token);
     const user_key = user_data.user._id;
-
     await User.updateOne(
       { _id: user_key },
       {
         nickname: nickname,
         description: description,
         profileImg: profileImg.location,
-        hobby1: hobby1,
-        hobby2: hobby2,
-        hobby3: hobby3,
+        hobbies: hobbies,
         interest_region: region,
       }
     );
