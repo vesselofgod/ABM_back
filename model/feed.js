@@ -17,23 +17,11 @@ const feedSchema = mongoose.Schema({
   author: {
     type: String,
   },
-  category1: {
-    type: String,
+  categories: {
+    type: Array,
   },
-  category2: {
-    type: String,
-  },
-  category3: {
-    type: String,
-  },
-  region1: {
-    type: String,
-  },
-  region2: {
-    type: String,
-  },
-  region3: {
-    type: String,
+  regions: {
+    type: Array,
   },
   state: {
     //Recruiting : 모집중.

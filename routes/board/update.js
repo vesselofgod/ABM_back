@@ -5,6 +5,8 @@ const Image = require("../../model/image");
 const Scrap = require("../../model/scrap");
 const utils = require("../../utils.js");
 const upload = require("../../middleware/s3");
+const Category = require("../../model/category")
+const Region = require("../../model/region").region
 
 const router = express.Router();
 
@@ -14,12 +16,8 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
       title,
       content,
       state,
-      category1,
-      category2,
-      category3,
-      region1,
-      region2,
-      region3,
+      categories,
+      regions,
       date,
       TO,
       regularity,
@@ -27,58 +25,49 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
     const fid = req.params.fid;
 
     const images = req.files ?? [];
+
     /*
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
     */
-    let feed = await Feed.findOne({ fid: fid });
 
-    if (
-      category1 == undefined &&
-      category2 == undefined &&
-      category3 == undefined
-    )
-      return res.status(402).json({
-        success: false,
-        error: [{ msg: "Please input categories" }],
-      });
-
-    if (region1 == undefined && region2 == undefined && region3 == undefined)
-      return res.status(402).json({
-        success: false,
-        error: [{ msg: "Please input regions" }],
-      });
-
-    if (region1 == region3 || region1 == region2 || region2 == region3) {
-      const empty_cnt = [region1, region2, region3].reduce(
-        (cnt, item) => (item ? cnt : cnt + 1),
-        0
-      );
-
-      if (empty_cnt < 2) {
-        return res.status(401).json({
-          success: false,
-          errors: [{ msg: "Selected regions are duplicated." }],
-        });
-      }
+    let thumbnail;
+    if (images.length == 0) {
+      //이미지가 없는 경우
+      thumbnail = await Category.findOne({ category_code: categories[0] });
+      thumbnail = thumbnail.default_img;
+    } else {
+      thumbnail = images[0].location;
     }
 
-    if (
-      category1 == category2 ||
-      category2 == category3 ||
-      category1 == category3
-    ) {
-      const empty_cnt = [category1, category2, category3].reduce(
-        (cnt, item) => (item ? cnt : cnt + 1),
-        0
-      );
+    let feed = await Feed.findOne({ fid: fid });
 
-      if (empty_cnt < 2) {
-        return res.status(401).json({
-          success: false,
-          errors: [{ msg: "Selected categories are duplicated." }],
-        });
-      }
+    const categoryset = new Set(categories);
+    const regionset = new Set(regions);
+    if (categories.length != categoryset.size) {
+      return res.status(401).json({
+        success: false,
+        errors: [{ msg: "Selected categories are duplicated." }],
+      });
+    }
+
+    if (regions.length != regionset.size) {
+      return res.status(401).json({
+        success: false,
+        errors: [{ msg: "Selected regions are duplicated." }],
+      });
+    }
+
+    let regionData = [];
+
+    for (let i = 0; i < regions.length; i++) {
+      let reg = await Region.findOne({ region_code: regions[i] });
+      let jsonData = {
+        region: reg.region,
+        district: reg.district,
+        region_code: reg.region_code,
+      };
+      regionData.push(jsonData)
     }
 
     if (feed.date > new Date(date)) {
@@ -94,16 +83,14 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
       title: feed.title,
       content: feed.content,
       state: feed.state,
-      category1: feed.category1,
-      category2: feed.category2,
-      category3: feed.category3,
-      region1: feed.region1,
-      region2: feed.region2,
-      region3: feed.region3,
+      categories: feed.categories,
+      regions: feed.regions,
       date: feed.date,
       TO: feed.TO,
       regularity: feed.regularity,
+      thumbnail: feed.thumbnail,
     });
+
     //fid와 대조해서 image table 날리기
     let backup_images = await Image.find({ fid: fid });
     for (let i = 0; i < backup_images.length; i++) {
@@ -129,15 +116,12 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
         title: title,
         content: content,
         state: state,
-        category1: category1,
-        category2: category2,
-        category3: category3,
-        region1: region1,
-        region2: region2,
-        region3: region3,
+        categories: categories,
+        regions: regionData,
         date: date,
         TO: TO,
         regularity: regularity,
+        thumbnail: thumbnail,
       }
     );
 
