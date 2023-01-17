@@ -41,27 +41,57 @@ router.post("/application/:fid", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
 
     let feed = await Feed.findOne({ fid: fid });
-
-    let match = new Match({
-      app_user: user_data.user.nickname,
-      manager: feed.author,
+    let existmatch = await Match.find({
       fid: fid,
-      due_date: date.setDate(date.getDate() + due),
-      accept: "Pending",
+      app_user: user_data.user.nickname,
     });
-
-    await match.save((err, doc) => {
-      if (err) {
-        console.log(err);
+    if (existmatch.length != 0) {
+      if (existmatch.length > 1) {
         return res.status(401).json({
           success: false,
-          err,
+          err: "state error : Only one application can exist.",
+        });
+      } else if (existmatch[0].apply_cnt > 1) {
+        return res.status(400).json({
+          success: false,
+          err: "re-apply only possible once.",
+        });
+      } else {
+        await Match.updateOne(
+          { fid: fid, app_user: user_data.user.nickname },
+          {
+            accept: "Pending",
+            due_date: date.setDate(date.getDate() + due),
+            apply_cnt: existmatch[0].apply_cnt + 1,
+          }
+        );
+        return res.status(200).json({
+          success: true,
         });
       }
-      return res.status(200).json({
-        success: true,
+    } else {
+      let match = new Match({
+        app_user: user_data.user.nickname,
+        manager: feed.author,
+        fid: fid,
+        due_date: date.setDate(date.getDate() + due),
+        accept: "Pending",
       });
-    });
+
+      await match.save((err, doc) => {
+        if (err) {
+          console.log(err);
+          return res.status(401).json({
+            success: false,
+            err,
+          });
+        }
+        return res.status(200).json({
+          success: true,
+        });
+      });
+    }
+    // 기존 매칭정보가 있는지 확인해야 함.
   } catch (err) {
     console.log(err);
     return res.status(500).json({

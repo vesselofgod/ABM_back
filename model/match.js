@@ -21,9 +21,9 @@ const matchSchema = mongoose.Schema({
     //대기중인 경우 : Pending
     type: String,
   },
-  can_reapply: {
-    type: Boolean,
-    default: true,
+  apply_cnt: {
+    type: Number,
+    default: 1,
   },
 });
 
