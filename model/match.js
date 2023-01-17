@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 
 // mongoDB에 게시글에 저장할 이미지 스키마를 imageSchema에 정의
 const matchSchema = mongoose.Schema({
-  applicant_id: {
+  app_user: {
     type: String,
   },
-  manager_id: {
+  manager: {
     type: String,
   },
   fid: {
@@ -23,6 +23,7 @@ const matchSchema = mongoose.Schema({
   },
   can_reapply: {
     type: Boolean,
+    default: true,
   },
 });
 

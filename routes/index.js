@@ -9,6 +9,7 @@ const createpage = require("./board/create.js");
 const readpage = require("./board/read.js");
 const deletepage = require("./board/delete.js");
 const updatepage = require("./board/update.js");
+const match = require("./board/match.js")
 
 router.use("/register", register);
 router.use("/auth", auth);
@@ -18,6 +19,7 @@ router.use("/create", createpage);
 router.use("/read", readpage);
 router.use("/delete", deletepage);
 router.use("/update", updatepage);
+router.use("/match", match);
 
 //need to change
 const uploadController = require("./user/upload");
