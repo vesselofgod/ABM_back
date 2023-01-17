@@ -5,7 +5,23 @@
     "content": "test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1 test feed 1",
     "author": "nickname1",
     "categories": ["1", "4"],
-    "regions": ["2720000000", "2723000000"],
+    "regions": [
+      {
+        "region": "서울특별시",
+        "district": "서대문구",
+        "region_code": "1141000000"
+      },
+      {
+        "region": "부산광역시",
+        "district": "강서구",
+        "region_code": "2644000000"
+      },
+      {
+        "region": "부산광역시",
+        "district": "남구",
+        "region_code": "2629000000"
+      }
+    ],
     "state": "Recruiting",
     "date": { "$date": "2023-05-01T00:00:00.00Z" },
     "TO": 3,
@@ -18,7 +34,18 @@
     "content": "test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2 test feed 2",
     "author": "nickname2",
     "categories": ["3", "8"],
-    "regions": ["1156000000", "1162000000"],
+    "regions": [
+      {
+        "region_code": "1156000000",
+        "region": "서울특별시",
+        "district": "영등포구"
+      },
+      {
+        "region_code": "1162000000",
+        "region": "서울특별시",
+        "district": "관악구"
+      }
+    ],
     "state": "Deleted",
     "date": { "$date": "2023-06-01T00:00:00.00Z" },
     "TO": 30,
@@ -31,7 +58,18 @@
     "content": "test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3 test feed 3",
     "author": "nickname1",
     "categories": ["5", "6", "4"],
-    "regions": ["2617000000", "2620000000"],
+    "regions": [
+      {
+        "region_code": "2617000000",
+        "region": "부산광역시",
+        "district": "동구"
+      },
+      {
+        "region_code": "2620000000",
+        "region": "부산광역시",
+        "district": "영도구"
+      }
+    ],
     "state": "Closed",
     "date": { "$date": "2023-08-01T00:00:00.00Z" },
     "TO": 2,
@@ -44,7 +82,18 @@
     "content": "test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4 test feed 4",
     "author": "nickname1",
     "categories": ["1", "3", "7"],
-    "regions": ["3611038000", "3611039000"],
+    "regions": [
+      {
+        "region_code": "3611038000",
+        "region": "세종특별자치시",
+        "district": "전동면"
+      },
+      {
+        "region_code": "3611039000",
+        "region": "세종특별자치시",
+        "district": "소정면"
+      }
+    ],
     "state": "Recruiting",
     "date": { "$date": "2023-09-01T00:00:00.00Z" },
     "TO": 10,
@@ -57,7 +106,13 @@
     "content": "test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5 test feed 5",
     "author": "nickname2",
     "categories": ["7", "0"],
-    "regions": ["4117300000"],
+    "regions": [
+      {
+        "region_code": "4117300000",
+        "region": "경기도",
+        "district": "안양시 동안구"
+      }
+    ],
     "state": "Recruiting",
     "date": { "$date": "2023-04-07T00:00:00.00Z" },
     "TO": 5,
