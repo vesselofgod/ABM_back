@@ -32,9 +32,18 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-const { swaggerUi, specs } = require("./swagger.js");
+// const { swaggerUi, specs } = require("./swagger.js");
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output.json");
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+//Swagger
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerFile, { explorer: true })
+);
 
 /**
  * 파라미터 변수 뜻

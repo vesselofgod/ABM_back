@@ -11,6 +11,17 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  // #swagger.tags = ['Users']
+
+  /* #swagger.parameters['parameterName'] = {
+        in: 'body',
+        description: 'hi',
+        required: true,
+        type: 'string',
+        
+        schema: 'hi'
+  } */
+
   const { uid, password } = req.body;
   try {
     // id를 비교해서 user가 이미 존재하는지 확인
