@@ -5,8 +5,9 @@ const Image = require("../../model/image");
 const Scrap = require("../../model/scrap");
 const utils = require("../../utils.js");
 const upload = require("../../middleware/s3");
-const Category = require("../../model/category")
-const Region = require("../../model/region").region
+const Category = require("../../model/category");
+const e = require("express");
+const Region = require("../../model/region").region;
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
       date,
       TO,
       regularity,
+      imgURL,
     } = req.body;
     const fid = req.params.fid;
 
@@ -34,8 +36,14 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
     let thumbnail;
     if (images.length == 0) {
       //이미지가 없는 경우
-      thumbnail = await Category.findOne({ category_code: categories[0] });
-      thumbnail = thumbnail.default_img;
+      //이것도 url 링크도 없는 경우에만 실행해야 한다.
+      if(imgURL.length ==0){
+        thumbnail = await Category.findOne({ category_code: categories[0] });
+        thumbnail = thumbnail.default_img;
+      }
+      else{
+        thumbnail = imgURL[0];
+      }
     } else {
       thumbnail = images[0].location;
     }
@@ -67,7 +75,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
         district: reg.district,
         region_code: reg.region_code,
       };
-      regionData.push(jsonData)
+      regionData.push(jsonData);
     }
 
     if (feed.date > new Date(date)) {
@@ -106,10 +114,12 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
         });
       }
     });
-
+    //이미지 url로 날라올 경우 이미지를 유지한다.
+    //이미지를 서치하고 있으면 그대로 쓰고 없으면 그냥 날림. 쿼리 하나만 추가하면 될 거 같음.
     //기존 이미지 테이블 지우기.
-    await Image.deleteMany({ fid: fid });
-
+    console.log(imgURL);
+    let result = await Image.deleteMany({ fid: fid, URL: { $nin: imgURL } });
+    console.log(result);
     await Feed.updateOne(
       { fid: fid },
       {
