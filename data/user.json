@@ -11,9 +11,7 @@
     "nickname": "nickname1",
     "description": "111111111111111",
     "interest_region": "1111000000",
-    "hobby1": "0",
-    "hobby2": "1",
-    "hobby3": null
+    "hobbies": ["0", "1"]
   },
   {
     "uid": "test2",
@@ -27,8 +25,6 @@
     "nickname": "nickname2",
     "description": "222222222222222",
     "interest_region": "2871000000",
-    "hobby1": "4",
-    "hobby2": null,
-    "hobby3": "3"
+    "hobbies": ["4", "3"]
   }
 ]
