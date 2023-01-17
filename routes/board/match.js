@@ -75,9 +75,32 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
   //match 수락/거절 API
   //req.params.uid를 통해서 신청자의 id를 확인하고, 자신에게 보낸 match 신청을 수락 or 거절함.
   //그런데 아마 uid하고 fid가 둘 다 필요할 거 같은데 parameter로 받지 말고 req.body로 받아야하나...
-  const fid = req.params.fid;
-  const app_user = req.params.app_user;
+  //토큰 받아서 자기가 작성자인지 확인해야하나...
+  try {
+    const fid = req.params.fid;
+    const app_user = req.params.app_user;
+    const accept = req.body.accept;
 
-  res.send("read page");
+    let result = await Match.updateOne(
+      { fid: fid, app_user: app_user },
+      { accept: accept }
+    );
+
+    if (result.matchedCount == 0)
+      return res.status(400).json({
+        success: false,
+        err: "Match does not found.",
+      });
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      err,
+    });
+  }
 });
+
 module.exports = router;
