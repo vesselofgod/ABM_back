@@ -2,91 +2,46 @@ const express = require("express");
 const router = express.Router();
 
 const Feed = require("../../model/feed");
-const Image = require("../../model/image");
-const Scrap = require("../../model/scrap");
 const Match = require("../../model/match");
 const utils = require("../../utils.js");
 const due = 3;
 
-router.get("/accpeted", async (req, res) => {
+router.get("/application", async (req, res) => {
   //내가 신청한 모임에 대한 것을 관리하는 페이지
   try {
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
-    let matches = await Match.find({
-      app_user: user_data.user.nickname,
-      accept: "Accepted",
-    });
-    let feeds = [];
-    for (let i = 0; i < matches.length; i++) {
-      let feed = await Feed.find({ fid: matches[i].fid });
-      feeds.push(feed);
-    }
-    return res.status(200).json({
-      success: true,
-      feedlist: feeds,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
-});
-
-router.get("/pending", async (req, res) => {
-  //매칭 대기중인 리스트를 보내는 API
-  try {
-    const token = req.header("authorization").split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
+    const status = req.body.status;
+    let matches;
 
     await Match.updateMany(
       { due_date: { $lt: new Date() } },
       { accept: "Rejected" }
     );
 
-    let matches = await Match.find({
-      app_user: user_data.user.nickname,
-      accept: "Pending",
-    });
+    if (status == "Accepted") {
+      matches = await Match.find({
+        app_user: user_data.user.nickname,
+        accept: "Accepted",
+      });
+    } else if (status == "Pending") {
+      matches = await Match.find({
+        app_user: user_data.user.nickname,
+        accept: "Pending",
+      });
+    } else if (status == "Rejected") {
+      matches = await Match.find({
+        app_user: user_data.user.nickname,
+        accept: "Rejected",
+      });
+    }
+
     let feeds = [];
     for (let i = 0; i < matches.length; i++) {
       let feed = await Feed.find({ fid: matches[i].fid });
       feeds.push(feed);
     }
-    return res.status(200).json({
-      success: true,
-      feedlist: feeds,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      error: err,
-    });
-  }
-});
 
-router.get("/rejected", async (req, res) => {
-  //내가 신청한 모임에 대한 것을 관리하는 페이지
-  try {
-    const token = req.header("authorization").split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
-
-    await Match.updateMany(
-      { due_date: { $lt: new Date() } },
-      { accept: "Rejected" }
-    );
-    let matches = await Match.find({
-      app_user: user_data.user.nickname,
-      accept: "Rejected",
-    });
-    let feeds = [];
-    for (let i = 0; i < matches.length; i++) {
-      let feed = await Feed.find({ fid: matches[i].fid });
-      feeds.push(feed);
-    }
     return res.status(200).json({
       success: true,
       feedlist: feeds,

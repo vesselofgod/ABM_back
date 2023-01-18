@@ -13,9 +13,7 @@
   "paths": {
     "/register/": {
       "get": {
-        "tags": [
-          "register"
-        ],
+        "tags": ["register"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -25,9 +23,7 @@
         }
       },
       "post": {
-        "tags": [
-          "register"
-        ],
+        "tags": ["register"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -80,9 +76,7 @@
     },
     "/register/checkUserIdExist": {
       "post": {
-        "tags": [
-          "register"
-        ],
+        "tags": ["register"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -111,9 +105,7 @@
     },
     "/register/certification": {
       "post": {
-        "tags": [
-          "register"
-        ],
+        "tags": ["register"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -145,9 +137,7 @@
     },
     "/auth/": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -162,9 +152,7 @@
     },
     "/login/": {
       "get": {
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -174,9 +162,7 @@
         }
       },
       "post": {
-        "tags": [
-          "login"
-        ],
+        "tags": ["login"],
         "description": "",
         "parameters": [
           {
@@ -222,9 +208,7 @@
     },
     "/profile/setRegion": {
       "get": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -239,9 +223,7 @@
     },
     "/profile/": {
       "get": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -256,9 +238,7 @@
     },
     "/profile/checkUserNicknameExist": {
       "post": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -287,9 +267,7 @@
     },
     "/profile/setProfile": {
       "post": {
-        "tags": [
-          "profile"
-        ],
+        "tags": ["profile"],
         "description": "",
         "parameters": [
           {
@@ -558,18 +536,24 @@
         }
       }
     },
-    "/match/accpeted": {
+    "/match/application": {
       "get": {
-        "tags": [
-          "match"
-        ],
-        "description": "유저가 신청한 매칭 결과 중 매칭이 완료된 정보를 얻어온다.",
+        "tags": ["match"],
+        "description": "유저가 신청한 매칭 결과들을 parameter의 status를 보고 판단하여 불러온다",
         "parameters": [
           {
             "name": "authorization",
             "in": "header",
             "schema": {
               "type": "string (JWT token)"
+            }
+          },
+          {
+            "name": "status",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "Accepted/Pending/Rejected"
             }
           }
         ],
@@ -579,15 +563,38 @@
             "content": {
               "application/json": {
                 "example": {
-                  "success" : true,
+                  "success": true,
                   "feedlist": [
                     [
                       {
-                        "_id": "63c50268a0ff5e4980e88120",
-                        "title": "dfajnjkjadsfnk",
-                        "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                        "_id": "63c50102d3e134a6e7cbca73",
+                        "title": "asdfasdsdjldsfjljkjaf",
+                        "content": "asdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjaf",
                         "author": "hehehehehehehehehe",
-                        "categories": ["1", "7"],
+                        "categories": ["9", "3"],
+                        "regions": [
+                          {
+                            "region_code": "4687000000",
+                            "region": "전라남도",
+                            "district": "영광군"
+                          }
+                        ],
+                        "state": "Recruiting",
+                        "date": "2022-01-07T00:00:00.000Z",
+                        "TO": 3,
+                        "regularity": true,
+                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/77717355455234301.png",
+                        "fid": 46,
+                        "__v": 0
+                      }
+                    ],
+                    [
+                      {
+                        "_id": "63c50268a0ff5e4980e88120",
+                        "title": "안녕하세요 배드민턴 소모임 모집중입니다",
+                        "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                        "author": "asdnfljnnfads",
+                        "categories": ["9", "7", "1"],
                         "regions": [
                           {
                             "region": "경기도",
@@ -604,7 +611,7 @@
                         "date": "2023-01-17T00:00:00.000Z",
                         "TO": 3,
                         "regularity": true,
-                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/5910227303.jpg",
+                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/591167637227303.jpg",
                         "fid": 42,
                         "__v": 0
                       }
@@ -620,165 +627,9 @@
         }
       }
     },
-    "/match/pending": {
-      "get": {
-        "tags": [
-          "match"
-        ],
-        "description": "유저가 신청한 매칭 결과 중 매칭 대기중인 리스트를 얻어온다.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string (JWT token)"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success" : true,
-                  "feedlist": [
-                    [
-                      {
-                        "_id": "63c50268a0ff5e4980e88120",
-                        "title": "dfajnjkjadsfnk",
-                        "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
-                        "author": "dsankjnlfads",
-                        "categories": ["4", "6"],
-                        "regions": [
-                          {
-                            "region_code": "4127000000",
-                            "region": "경기도",
-                            "district": "안산시"
-                          },
-                          {
-                            "region_code": "4276000000",
-                            "region": "강원도",
-                            "district": "평창군"
-                          }
-                        ],
-                        "state": "Recruiting",
-                        "date": "2023-01-17T00:00:00.000Z",
-                        "TO": 10,
-                        "regularity": false,
-                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/591984946565467303.jpg",
-                        "fid": 312,
-                        "__v": 0
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/match/rejected": {
-      "get": {
-        "tags": [
-          "match"
-        ],
-        "description": "유저가 신청한 매칭 결과 중 매칭 실패한 리스트를 얻어온다.",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "schema": {
-              "type": "string (JWT token)"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "example": {
-                  "success": true,
-                  "feedlist": [
-                      [
-                          {
-                              "_id": "63c50102d3e134a6e7cbca73",
-                              "title": "asdfasdsdjldsfjljkjaf",
-                              "content": "asdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjaf",
-                              "author": "hehehehehehehehehe",
-                              "categories": [
-                                  "9",
-                                  "3"
-                              ],
-                              "regions": [
-                                  {
-                                    "region_code": "4687000000",
-                                    "region": "전라남도",
-                                    "district": "영광군"
-                                  }
-                              ],
-                              "state": "Recruiting",
-                              "date": "2022-01-07T00:00:00.000Z",
-                              "TO": 3,
-                              "regularity": true,
-                              "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/77717355455234301.png",
-                              "fid": 46,
-                              "__v": 0
-                          }
-                      ],
-                      [
-                          {
-                              "_id": "63c50268a0ff5e4980e88120",
-                              "title": "안녕하세요 배드민턴 소모임 모집중입니다",
-                              "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
-                              "author": "asdnfljnnfads",
-                              "categories": [
-                                  "9",
-                                  "7",
-                                  "1"
-                              ],
-                              "regions": [
-                                  {
-                                      "region": "경기도",
-                                      "district": "안양시 만안구",
-                                      "region_code": "4117100000"
-                                  },
-                                  {
-                                      "region": "경기도",
-                                      "district": "부천시",
-                                      "region_code": "4119000000"
-                                  }
-                              ],
-                              "state": "Recruiting",
-                              "date": "2023-01-17T00:00:00.000Z",
-                              "TO": 3,
-                              "regularity": true,
-                              "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/591167637227303.jpg",
-                              "fid": 42,
-                              "__v": 0
-                          }
-                      ]
-                  ]
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
     "/match/application/{fid}": {
       "post": {
-        "tags": [
-          "match"
-        ],
+        "tags": ["match"],
         "description": "게시글에 match 신청을 넣는 API",
         "parameters": [
           {
@@ -818,9 +669,7 @@
     },
     "/match/recruit/{fid}/{app_user}": {
       "patch": {
-        "tags": [
-          "match"
-        ],
+        "tags": ["match"],
         "description": "",
         "parameters": [
           {
