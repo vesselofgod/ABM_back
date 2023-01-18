@@ -75,10 +75,9 @@ router.get("/rejected", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
 
     await Match.updateMany(
-      { due_date: { $gt: new Date() } },
+      { due_date: { $lt: new Date() } },
       { accept: "Rejected" }
     );
-
     let matches = await Match.find({
       app_user: user_data.user.nickname,
       accept: "Rejected",
@@ -116,12 +115,12 @@ router.post("/application/:fid", async (req, res) => {
     });
     if (existmatch.length != 0) {
       if (existmatch.length > 1) {
-        return res.status(401).json({
+        return res.status(402).json({
           success: false,
           err: "state error : Only one application can exist.",
         });
       } else if (existmatch[0].apply_cnt > 1) {
-        return res.status(400).json({
+        return res.status(401).json({
           success: false,
           err: "re-apply only possible once.",
         });
@@ -150,7 +149,7 @@ router.post("/application/:fid", async (req, res) => {
       await match.save((err, doc) => {
         if (err) {
           console.log(err);
-          return res.status(401).json({
+          return res.status(400).json({
             success: false,
             err,
           });
@@ -179,13 +178,11 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
     const fid = req.params.fid;
     const app_user = req.params.app_user;
     const accept = req.body.accept;
-  
+
     let result = await Match.updateOne(
       { fid: fid, app_user: app_user },
       { accept: accept }
     );
-    
-    console.log(result);
 
     if (result.matchedCount == 0)
       return res.status(400).json({
