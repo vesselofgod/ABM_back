@@ -38,7 +38,7 @@ router.get("/application", async (req, res) => {
 
     let feeds = [];
     for (let i = 0; i < matches.length; i++) {
-      let feed = await Feed.find({ fid: matches[i].fid });
+      let feed = await Feed.findOne({ fid: matches[i].fid });
       feeds.push(feed);
     }
 

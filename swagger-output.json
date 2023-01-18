@@ -553,7 +553,7 @@
             "in": "url",
             "schema": {
               "type": "string",
-              "example": "Accepted/Pending/Rejected"
+              "example": "..../match/application?status=Accepted/Pending/Rejected"
             }
           }
         ],
@@ -565,57 +565,53 @@
                 "example": {
                   "success": true,
                   "feedlist": [
-                    [
-                      {
-                        "_id": "63c50102d3e134a6e7cbca73",
-                        "title": "asdfasdsdjldsfjljkjaf",
-                        "content": "asdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjaf",
-                        "author": "hehehehehehehehehe",
-                        "categories": ["9", "3"],
-                        "regions": [
-                          {
-                            "region_code": "4687000000",
-                            "region": "전라남도",
-                            "district": "영광군"
-                          }
-                        ],
-                        "state": "Recruiting",
-                        "date": "2022-01-07T00:00:00.000Z",
-                        "TO": 3,
-                        "regularity": true,
-                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/77717355455234301.png",
-                        "fid": 46,
-                        "__v": 0
-                      }
-                    ],
-                    [
-                      {
-                        "_id": "63c50268a0ff5e4980e88120",
-                        "title": "안녕하세요 배드민턴 소모임 모집중입니다",
-                        "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
-                        "author": "asdnfljnnfads",
-                        "categories": ["9", "7", "1"],
-                        "regions": [
-                          {
-                            "region": "경기도",
-                            "district": "안양시 만안구",
-                            "region_code": "4117100000"
-                          },
-                          {
-                            "region": "경기도",
-                            "district": "부천시",
-                            "region_code": "4119000000"
-                          }
-                        ],
-                        "state": "Recruiting",
-                        "date": "2023-01-17T00:00:00.000Z",
-                        "TO": 3,
-                        "regularity": true,
-                        "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/591167637227303.jpg",
-                        "fid": 42,
-                        "__v": 0
-                      }
-                    ]
+                    {
+                      "_id": "63c50102d3e134a6e7cbca73",
+                      "title": "asdfasdsdjldsfjljkjaf",
+                      "content": "asdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjafasdfasdsdjldsfjljkjaf",
+                      "author": "hehehehehehehehehe",
+                      "categories": ["9", "3"],
+                      "regions": [
+                        {
+                          "region_code": "4687000000",
+                          "region": "전라남도",
+                          "district": "영광군"
+                        }
+                      ],
+                      "state": "Recruiting",
+                      "date": "2022-01-07T00:00:00.000Z",
+                      "TO": 3,
+                      "regularity": true,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/77717355455234301.png",
+                      "fid": 46,
+                      "__v": 0
+                    },
+                    {
+                      "_id": "63c50268a0ff5e4980e88120",
+                      "title": "안녕하세요 배드민턴 소모임 모집중입니다",
+                      "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                      "author": "asdnfljnnfads",
+                      "categories": ["9", "7", "1"],
+                      "regions": [
+                        {
+                          "region": "경기도",
+                          "district": "안양시 만안구",
+                          "region_code": "4117100000"
+                        },
+                        {
+                          "region": "경기도",
+                          "district": "부천시",
+                          "region_code": "4119000000"
+                        }
+                      ],
+                      "state": "Recruiting",
+                      "date": "2023-01-17T00:00:00.000Z",
+                      "TO": 3,
+                      "regularity": true,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/591167637227303.jpg",
+                      "fid": 42,
+                      "__v": 0
+                    }
                   ]
                 }
               }
