@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Feed = require("../../model/feed");
 const Match = require("../../model/match");
+const User = require("../../model/user");
 const utils = require("../../utils.js");
 const due = 3;
 
@@ -45,6 +46,65 @@ router.get("/application", async (req, res) => {
     return res.status(200).json({
       success: true,
       feedlist: feeds,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: err,
+    });
+  }
+});
+
+router.get("/recruit/:fid", async (req, res) => {
+  //내가 작성한 feed에 들어온 매칭 신청을 보여주는 페이지
+  try {
+    console.log("start");
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    const fid = req.params.fid;
+    console.log(fid);
+    let matches = await Match.find({
+      fid: fid,
+      manager: user_data.user.nickname,
+      accept: "Pending",
+    });
+    console.log(matches);
+
+    return res.status(200).json({
+      success: true,
+      applylist: matches,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: "server error",
+    });
+  }
+});
+
+router.get("/recruit/:fid/:app_user", async (req, res) => {
+  //내가 신청한 모임에 대한 것을 관리하는 페이지
+  try {
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    const app_user = req.params.app_user;
+
+    let applicant = await User.findOne({
+      nickname: app_user,
+    });
+
+    if (applicant == null) {
+      return res.status(401).json({
+        success: false,
+        error: "applicant not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      applicant: applicant,
     });
   } catch (err) {
     console.log(err);
