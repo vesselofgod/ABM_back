@@ -63,18 +63,32 @@ router.post("/check/:fid", async (req, res) => {
 });
 
 router.delete("/uncheck/:fid", async (req, res) => {
-    try {
-      const fid = req.params.fid;
-      const token = req.header("authorization").split(" ")[1];
-      const user_data = utils.parseJWTPayload(token);
-  
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
+  try {
+    const fid = req.params.fid;
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+
+    let result = await Scrap.deleteOne({
+      fid: fid,
+      user: user_data.user.nickname,
+    });
+
+    if (result.deletedCount == 0) {
+      return res.status(401).json({
         success: false,
-        err,
+        err: "it is unscraped feed or deleted feed",
       });
     }
-  });
+    return res.status(200).json({
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      err: "server error",
+    });
+  }
+});
 
 module.exports = router;
