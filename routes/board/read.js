@@ -47,6 +47,7 @@ router.get("/:feed_id", async (req, res) => {
     let isAuthor = false;
     let isScrapped = false;
     let matchStatus;
+    let can_apply = true;
 
     let feed = await Feed.findOne({
       fid: fid,
@@ -63,7 +64,10 @@ router.get("/:feed_id", async (req, res) => {
 
     if (user_data.user.nickname == feed.author) isAuthor = true;
     if (scrap != null) isScrapped = true;
-    if (match != null) matchStatus = match.accept;
+    if (match != null){
+      matchStatus = match.accept;
+      if (match.apply_cnt>1) can_apply = false;
+    }
 
     const images = await Image.find({ fid: fid });
     return res.status(200).json({
@@ -73,6 +77,7 @@ router.get("/:feed_id", async (req, res) => {
       isAuthor: isAuthor,
       isScrapped: isScrapped,
       matchStatus: matchStatus,
+      can_apply: can_apply,
     });
   } catch (err) {
     console.log(err);
