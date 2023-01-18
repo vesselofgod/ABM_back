@@ -24,7 +24,7 @@
       },
       "post": {
         "tags": ["register"],
-        "description": "",
+        "description": "회원가입에 필요한 정보들을 제공받아서 user table에 저장하는 API",
         "parameters": [],
         "responses": {
           "200": {
@@ -77,7 +77,7 @@
     "/register/checkUserIdExist": {
       "post": {
         "tags": ["register"],
-        "description": "",
+        "description": "회원가입 시 id가 중복되지 않는지 체크하는 API",
         "parameters": [],
         "responses": {
           "200": {
@@ -106,7 +106,7 @@
     "/register/certification": {
       "post": {
         "tags": ["register"],
-        "description": "",
+        "description": "휴대폰 인증시에 발급된 imp_uid가 유효한지 확인하는 API ",
         "parameters": [],
         "responses": {
           "200": {
@@ -138,7 +138,7 @@
     "/auth/": {
       "get": {
         "tags": ["auth"],
-        "description": "",
+        "description": "리펙터링 필요함",
         "parameters": [],
         "responses": {
           "200": {
@@ -163,7 +163,7 @@
       },
       "post": {
         "tags": ["login"],
-        "description": "",
+        "description": "유저의 ID와 비밀번호를 확인하고 JWT token을 발급해주는 API",
         "parameters": [
           {
             "name": "parameterName",
@@ -209,7 +209,7 @@
     "/profile/setRegion": {
       "get": {
         "tags": ["profile"],
-        "description": "",
+        "description": "DB에 region정보를 입력하는 API",
         "parameters": [],
         "responses": {
           "201": {
@@ -239,7 +239,7 @@
     "/profile/checkUserNicknameExist": {
       "post": {
         "tags": ["profile"],
-        "description": "",
+        "description": "최초 프로필 설정 시 중복된 닉네임이 존재하는지 확인하는 API",
         "parameters": [],
         "responses": {
           "200": {
@@ -268,7 +268,7 @@
     "/profile/setProfile": {
       "post": {
         "tags": ["profile"],
-        "description": "",
+        "description": "회원가입 후 프로필을 최초로 설정하는 API",
         "parameters": [
           {
             "name": "authorization",
@@ -328,7 +328,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "게시글(feed)를 생성하는 API",
         "parameters": [
           {
             "name": "authorization",
@@ -399,7 +399,7 @@
     },
     "/read/recruit": {
       "get": {
-        "description": "",
+        "description": "자신이 게시한 글에 대한 정보를 제공하는 API",
         "parameters": [
           {
             "name": "authorization",
@@ -421,7 +421,7 @@
     },
     "/read/{feed_id}": {
       "get": {
-        "description": "",
+        "description": "feed의 상세페이지를 볼 수 있는 API",
         "parameters": [
           {
             "name": "feed_id",
@@ -497,7 +497,8 @@
                   ],
                   "isAuthor": false,
                   "isScrapped": true,
-                  "matchStatus": "Pending (match 신청 없을 땐 null)"
+                  "matchStatus": "Pending (match 신청 없을 땐 필드 자체가 없음)",
+                  "can_apply": true
                 }
               }
             }
@@ -510,7 +511,7 @@
     },
     "/delete/{fid}": {
       "delete": {
-        "description": "",
+        "description": "게시글을 삭제하는 API(soft delete)",
         "parameters": [
           {
             "name": "fid",
@@ -533,7 +534,7 @@
     },
     "/update/{fid}": {
       "put": {
-        "description": "",
+        "description": "fid가 일치하는 게시물을 업데이트하는 API",
         "parameters": [
           {
             "name": "fid",
@@ -722,10 +723,136 @@
         }
       }
     },
+    "/match/recruit/{fid}": {
+      "get": {
+        "tags": ["match"],
+        "description": "관리자가 각 feed 별로 매칭 신청한 사람들 중 pending상태인 사람을 보여줌",
+        "parameters": [
+          {
+            "name": "fid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "applylist": [
+                      {
+                          "_id": "63c7a779797e189f9cd515d8",
+                          "app_user": "sssss",
+                          "manager": "dsaklmlkmdaslkfml",
+                          "fid": 44,
+                          "due_date": "2023-01-21T08:41:02.982Z",
+                          "accept": "Pending",
+                          "apply_cnt": 2,
+                          "__v": 0
+                      },
+                      {
+                          "_id": "63c7a7a5797e189f9cd515dc",
+                          "app_user": "dsadsfas855",
+                          "manager": "dsaklmlkmdaslkfml",
+                          "fid": 44,
+                          "due_date": "2023-01-21T08:02:45.173Z",
+                          "accept": "Pending",
+                          "apply_cnt": 1,
+                          "__v": 0
+                      }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/match/recruit/{fid}/{app_user}": {
+      "get": {
+        "tags": ["match"],
+        "description": "관리자가 매칭을 신청한 유저에 대한 프로필 정보를 제공받는 API",
+        "parameters": [
+          {
+            "name": "fid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "app_user",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "applicant": {
+                      "hobbies": ["3"],
+                      "_id": "63be0ad937bdda1077057278",
+                      "uid": "vessgod",
+                      "password": "$2b$10$gocA2.6kwu0Gj92fbv/UV.6l6H.wntUCwO6iZa31kr3nbUxVZ9cwu",
+                      "name": "heekang",
+                      "sex": "Female",
+                      "birth": "1999-04-03T00:00:00.000Z",
+                      "email": "vessgod@gmail.com",
+                      "certificationKey": "l0o4Lpwo/Yi9POjpb1w3O3tdfWGFTLNk3fCyqQbBco4QUGLQcNyM6/2dYVxWtDqVlZh4ElGwBt7YRrcyv7WYlw==",
+                      "__v": 0,
+                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmUwYWQ5MzdiZGRhMTA3NzA1NzI3OCIsInVpZCI6InZlc3Nnb2QiLCJuYW1lIjoiaGVla2FuZyIsInNleCI6IkZlbWFsZSIsImJpcnRoIjoiMTk5OS0wNC0wM1QwMDowMDowMC4wMDBaIiwiZW1haWwiOiJ2ZXNzZ29kQGdtYWlsLmNvbSIsImNlcnRpZmljYXRpb25LZXkiOiJsMG80THB3by9ZaTlQT2pwYjF3M08zdGRmV0dGVExOazNmQ3lxUWJCY280UVVHTFFjTnlNNi8yZFlWeFd0RHFWbFpoNEVsR3dCdDdZUnJjeXY3V1lsdz09IiwicHJvZmlsZUltZyI6Imh0dHBzOi8vb3VyYi5zMy5hcC1ub3J0aGVhc3QtMi5hbWF6b25hd3MuY29tLzk5MzE2NzM0MDAyMDA0MjQucG5nIiwibmlja25hbWUiOiJzc3NzcyIsImRlc2NyaXB0aW9uIjoiaGhpaGloaWhpaGloaWhpaGloaSIsImhvYmJ5MSI6ImdhbWUiLCJob2JieTIiOiIxNDg0NjUiLCJob2JieTMiOiJmb290YmFsbCJ9LCJpYXQiOjE2NzM0MTMyMDN9.GD7wlW7-FE03VTOc7qxZ-j5AdHsIePxaQG4tTZixnFU",
+                      "description": "hhihihihihihihihihi",
+                      "hobby1": "game",
+                      "hobby2": "148465",
+                      "hobby3": "football",
+                      "nickname": "sssss",
+                      "profileImg": "https://ourb.s3.ap-northeast-2.amazonaws.com/9931673400200424.png"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "applicant not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "patch": {
         "tags": ["match"],
-        "description": "",
+        "description": "관리자가 매칭 신청에 대해서 수락/거절을 하는 API",
         "parameters": [
           {
             "name": "fid",
@@ -774,7 +901,7 @@
     "/scrap/": {
       "get": {
         "tags": ["scrap"],
-        "description": "",
+        "description": "자신이 스크랩한 게시글을 보여주는 API",
         "parameters": [
           {
             "name": "authorization",
@@ -874,7 +1001,7 @@
     "/scrap/check/{fid}": {
       "post": {
         "tags": ["scrap"],
-        "description": "",
+        "description": "특정 게시글을 scrap하는 API",
         "parameters": [
           {
             "name": "fid",
@@ -908,7 +1035,7 @@
     "/scrap/uncheck/{fid}": {
       "delete": {
         "tags": ["scrap"],
-        "description": "",
+        "description": "기존의 scrap을 취소하는 API",
         "parameters": [
           {
             "name": "fid",
