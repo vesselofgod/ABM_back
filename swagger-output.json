@@ -550,7 +550,7 @@
           },
           {
             "name": "status",
-            "in": "path",
+            "in": "url",
             "schema": {
               "type": "string",
               "example": "Accepted/Pending/Rejected"

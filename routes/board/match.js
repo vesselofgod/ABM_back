@@ -11,7 +11,7 @@ router.get("/application", async (req, res) => {
   try {
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
-    const status = req.body.status;
+    const status = req.query.status;
     let matches;
 
     await Match.updateMany(
