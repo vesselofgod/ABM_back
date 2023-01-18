@@ -711,6 +711,168 @@
           }
         }
       }
+    },
+    "/scrap/": {
+      "get": {
+        "tags": ["scrap"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "scraplist": [
+                    {
+                      "_id": "63c50268a0ff5e4980e88120",
+                      "title": "dfajnjkjadsfnk",
+                      "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                      "author": "hehehehehehehehehe",
+                      "categories": ["1", "7"],
+                      "regions": [
+                        {
+                          "region": "경기도",
+                          "district": "안양시 만안구",
+                          "region_code": "4117100000"
+                        },
+                        {
+                          "region": "경기도",
+                          "district": "부천시",
+                          "region_code": "4119000000"
+                        }
+                      ],
+                      "state": "Recruiting",
+                      "date": "2023-01-17T00:00:00.000Z",
+                      "TO": 3,
+                      "regularity": true,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911673930227303.jpg",
+                      "fid": 42,
+                      "__v": 0
+                    },
+                    {
+                      "categories": ["1"],
+                      "regions": [
+                        {
+                          "region": "경기도",
+                          "district": "안양시 만안구",
+                          "region_code": "4117100000"
+                        }
+                      ],
+                      "_id": "63c1040a401bdc91eff130d2",
+                      "title": "dmdmkdkdkdkdkkdkd",
+                      "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                      "author": "sssss",
+                      "state": "Closed",
+                      "date": "2020-01-01T00:00:00.000Z",
+                      "TO": 5,
+                      "regularity": false,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/3081673593866170.jpg",
+                      "fid": 34,
+                      "__v": 0
+                    },
+                    {
+                      "categories": ["1", "7", "5"],
+                      "regions": [
+                        {
+                          "region_code": "4691000000",
+                          "region": "전라남도",
+                          "district": "신안군"
+                        }
+                      ],
+                      "_id": "63c1045f401bdc91eff130e0",
+                      "title": "fiffffffffffffffffffffff",
+                      "content": "adsddsasfm;fealfmd;smsd;lmdsklfsndajkfsldnkjldasflkdsfjlkdsfjaljasfdljkfsdajlfsda",
+                      "author": "sssss",
+                      "state": "Recruiting",
+                      "date": "2020-01-01T00:00:00.000Z",
+                      "TO": 5,
+                      "regularity": false,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/2391673593951802.jpg",
+                      "fid": 35,
+                      "__v": 0
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/scrap/check/{fid}": {
+      "post": {
+        "tags": ["scrap"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/scrap/uncheck/{fid}": {
+      "delete": {
+        "tags": ["scrap"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "fid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {

@@ -1,16 +1,12 @@
 // models/User.js
 const mongoose = require("mongoose");
 
-// mongoDB에 회원정보를 저장할 스키마를 regionSchema에 정의
 const scrapSchema = mongoose.Schema({
-  uid: {
+  user: {
     type: String,
   },
   fid: {
-    type: String,
-  },
-  isScrapped: {
-    type: Boolean,
+    type: Number,
   },
 });
 
