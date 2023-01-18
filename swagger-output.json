@@ -435,13 +435,72 @@
             "name": "authorization",
             "in": "header",
             "schema": {
-              "type": "string"
+              "type": "string (JWT token)"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "feed": {
+                      "_id": "63c50268a0ff5e4980e88120",
+                      "title": "dfajnjkjadsfnk",
+                      "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                      "author": "hehehehehehehehehe",
+                      "categories": [
+                          "1",
+                          "7"
+                      ],
+                      "regions": [
+                          {
+                              "region": "경기도",
+                              "district": "안양시 만안구",
+                              "region_code": "4117100000"
+                          },
+                          {
+                              "region": "경기도",
+                              "district": "부천시",
+                              "region_code": "4119000000"
+                          }
+                      ],
+                      "state": "Recruiting",
+                      "date": "2023-01-17T00:00:00.000Z",
+                      "TO": 3,
+                      "regularity": true,
+                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911673930227303.jpg",
+                      "fid": 42,
+                      "__v": 0
+                  },
+                  "images": [
+                      {
+                          "_id": "63c60ed38b5ff4a8568e6441",
+                          "fid": 42,
+                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/9231673924306945.jpg",
+                          "__v": 0
+                      },
+                      {
+                          "_id": "63c625f378b97cec05d4ba30",
+                          "fid": 42,
+                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911672542303.jpg",
+                          "__v": 0
+                      },
+                      {
+                          "_id": "63c625f378b97cec05d4ba31",
+                          "fid": 42,
+                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/604162273930227305.jpg",
+                          "__v": 0
+                      }
+                  ],
+                  "isAuthor": false,
+                  "isScrapped": true,
+                  "matchStatus": "Pending (match 신청 없을 땐 null)"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
