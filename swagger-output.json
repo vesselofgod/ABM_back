@@ -838,7 +838,7 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "DB Error : Bad Request"
           },
           "500": {
             "description": "Internal Server Error"
@@ -868,6 +868,12 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "it is unscraped feed or deleted feed"
+          },
           "500": {
             "description": "Internal Server Error"
           }
