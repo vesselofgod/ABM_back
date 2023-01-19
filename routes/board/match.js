@@ -60,17 +60,14 @@ router.get("/application", async (req, res) => {
 router.get("/recruit/:fid", async (req, res) => {
   //내가 작성한 feed에 들어온 매칭 신청을 보여주는 페이지
   try {
-    console.log("start");
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
     const fid = req.params.fid;
-    console.log(fid);
     let matches = await Match.find({
       fid: fid,
       manager: user_data.user.nickname,
       accept: "Pending",
     });
-    console.log(matches);
 
     return res.status(200).json({
       success: true,
@@ -92,7 +89,7 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
     const app_user = req.params.app_user;
     const fid = req.params.fid;
-    const isAccepted = false;
+    let isAccepted;
 
     let applicant = await User.findOne({
       nickname: app_user,
@@ -106,8 +103,17 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
       fid: fid,
       app_user: app_user,
     });
-    
-    if (match != null && match.accept == "Accepted") isAccepted = true;
+
+    if (match != null && match.accept == "Accepted") {
+      isAccepted = true;
+    } else if (
+      match != null && (match.accept == "Pending" ||
+      match.accept == "Rejected")
+    ) {
+      isAccepted = false;
+    } else {
+      isAccepted = null;
+    }
     if (applicant == null || match == null || region == null) {
       return res.status(401).json({
         success: false,
