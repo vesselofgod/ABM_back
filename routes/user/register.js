@@ -1,12 +1,28 @@
 // express 모듈 내의 Router를 이용해서 회원정보를 post 방식으로 요청 받으면 DB에 회원정보 저장
 const express = require("express");
 const User = require("../../model/user");
+const Category = require("../../model/category");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Iamport = require("iamport-rest-client-nodejs");
 const axios = require("axios");
 require("dotenv").config();
+
+router.get("/", async (req, res) => {
+  let categories = await Category.find();
+  console.log(categories)
+  if (categories == null || categories.length ==0) {
+    return res.status(400).json({
+      success: false,
+      errors: "Failed to load category.",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    categories: categories
+  });
+});
 
 router.post("/checkUserIdExist", async (req, res) => {
   const uid = req.body.uid;
