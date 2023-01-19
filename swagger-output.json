@@ -12,16 +12,6 @@
   ],
   "paths": {
     "/register/": {
-      "get": {
-        "tags": ["register"],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "post": {
         "tags": ["register"],
         "description": "회원가입에 필요한 정보들을 제공받아서 user table에 저장하는 API",
@@ -31,10 +21,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "User already exists"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "DB Error"
           },
           "500": {
             "description": "Internal Server Error"
@@ -47,25 +37,32 @@
                 "type": "object",
                 "properties": {
                   "uid": {
-                    "example": "any"
+                    "example": "userid1234",
+                    "type": "string"
                   },
                   "password": {
-                    "example": "any"
+                    "example": "userpass1234",
+                    "type": "string"
                   },
                   "name": {
-                    "example": "any"
+                    "example": "heekang jang",
+                    "type": "string"
                   },
                   "sex": {
-                    "example": "any"
+                    "example": "Male",
+                    "type": "string"
                   },
                   "birth": {
-                    "example": "any"
+                    "example": "2001-05-19",
+                    "type": "date"
                   },
                   "email": {
-                    "example": "any"
+                    "example": "userid1234@gmail.com",
+                    "type": "string"
                   },
                   "certificationKey": {
-                    "example": "any"
+                    "example": "amsdvdkslnn234mflf32fm",
+                    "type": "string"
                   }
                 }
               }
@@ -94,7 +91,8 @@
                 "type": "object",
                 "properties": {
                   "uid": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   }
                 }
               }
@@ -126,7 +124,8 @@
                 "type": "object",
                 "properties": {
                   "imp_uid": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   }
                 }
               }
@@ -151,31 +150,9 @@
       }
     },
     "/login/": {
-      "get": {
-        "tags": ["login"],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "post": {
         "tags": ["login"],
         "description": "유저의 ID와 비밀번호를 확인하고 JWT token을 발급해주는 API",
-        "parameters": [
-          {
-            "name": "parameterName",
-            "in": "body",
-            "description": "hi",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "hi"
-            }
-          }
-        ],
         "responses": {
           "400": {
             "description": "Bad Request"
@@ -194,10 +171,12 @@
                 "type": "object",
                 "properties": {
                   "uid": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   },
                   "password": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   }
                 }
               }
@@ -224,11 +203,29 @@
     "/profile/": {
       "get": {
         "tags": ["profile"],
-        "description": "",
+        "description": "프로필 설정에 필요한 정보들을 제공하는 API",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "success": true,
+                  "region_data": {
+                    "서울특별시": [
+                      { "label": "중구", "code": "1114000000" },
+                      { "label": "동대문구", "code": "1123000000" },
+                      { "label": "중랑구", "code": "1126000000" }
+                    ],
+                    "대구광역시": [
+                      { "label": "서구", "code": "2717000000" },
+                      { "label": "중구", "code": "2711000000" }
+                    ]
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -256,7 +253,8 @@
                 "type": "object",
                 "properties": {
                   "nickname": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   }
                 }
               }
@@ -299,16 +297,23 @@
                 "type": "object",
                 "properties": {
                   "nickname": {
-                    "example": "any"
+                    "example": "닉네임123",
+                    "type": "string"
                   },
                   "description": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   },
                   "hobbies": {
-                    "example": "any"
+                    "example": ["3", "6", "9"],
+                    "type": "Array"
                   },
                   "region": {
-                    "example": "any"
+                    "example": "4717000000",
+                    "type": "string"
+                  },
+                  "image": {
+                    "type": "image file"
                   }
                 }
               }
@@ -318,15 +323,6 @@
       }
     },
     "/create/": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "post": {
         "description": "게시글(feed)를 생성하는 API",
         "parameters": [
@@ -359,40 +355,36 @@
                 "type": "object",
                 "properties": {
                   "title": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   },
                   "content": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   },
                   "categories": {
-                    "example": "any"
+                    "example": ["3", "6", "9"],
+                    "type": "Array"
                   },
                   "regions": {
-                    "example": "any"
+                    "example": ["4723000000", "4725000000"],
+                    "type": "Array"
                   },
                   "date": {
-                    "example": "any"
+                    "example": "2019-04-17",
+                    "type": "date"
                   },
                   "TO": {
-                    "example": "any"
+                    "example": 10,
+                    "type": "Number"
                   },
                   "regularity": {
-                    "example": "any"
+                    "example": true,
+                    "type": "boolean"
                   }
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/read/": {
-      "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
@@ -447,53 +439,50 @@
                 "example": {
                   "success": true,
                   "feed": {
-                      "_id": "63c50268a0ff5e4980e88120",
-                      "title": "dfajnjkjadsfnk",
-                      "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
-                      "author": "hehehehehehehehehe",
-                      "categories": [
-                          "1",
-                          "7"
-                      ],
-                      "regions": [
-                          {
-                              "region": "경기도",
-                              "district": "안양시 만안구",
-                              "region_code": "4117100000"
-                          },
-                          {
-                              "region": "경기도",
-                              "district": "부천시",
-                              "region_code": "4119000000"
-                          }
-                      ],
-                      "state": "Recruiting",
-                      "date": "2023-01-17T00:00:00.000Z",
-                      "TO": 3,
-                      "regularity": true,
-                      "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911673930227303.jpg",
-                      "fid": 42,
-                      "__v": 0
+                    "_id": "63c50268a0ff5e4980e88120",
+                    "title": "dfajnjkjadsfnk",
+                    "content": "sad54654654648489fasdf4d8asf984da48f4das465fdas456fa4ds6fas45f5fdsa46fsa456",
+                    "author": "hehehehehehehehehe",
+                    "categories": ["1", "7"],
+                    "regions": [
+                      {
+                        "region": "경기도",
+                        "district": "안양시 만안구",
+                        "region_code": "4117100000"
+                      },
+                      {
+                        "region": "경기도",
+                        "district": "부천시",
+                        "region_code": "4119000000"
+                      }
+                    ],
+                    "state": "Recruiting",
+                    "date": "2023-01-17T00:00:00.000Z",
+                    "TO": 3,
+                    "regularity": true,
+                    "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911673930227303.jpg",
+                    "fid": 42,
+                    "__v": 0
                   },
                   "images": [
-                      {
-                          "_id": "63c60ed38b5ff4a8568e6441",
-                          "fid": 42,
-                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/9231673924306945.jpg",
-                          "__v": 0
-                      },
-                      {
-                          "_id": "63c625f378b97cec05d4ba30",
-                          "fid": 42,
-                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911672542303.jpg",
-                          "__v": 0
-                      },
-                      {
-                          "_id": "63c625f378b97cec05d4ba31",
-                          "fid": 42,
-                          "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/604162273930227305.jpg",
-                          "__v": 0
-                      }
+                    {
+                      "_id": "63c60ed38b5ff4a8568e6441",
+                      "fid": 42,
+                      "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/9231673924306945.jpg",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "63c625f378b97cec05d4ba30",
+                      "fid": 42,
+                      "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/5911672542303.jpg",
+                      "__v": 0
+                    },
+                    {
+                      "_id": "63c625f378b97cec05d4ba31",
+                      "fid": 42,
+                      "URL": "https://ourb.s3.ap-northeast-2.amazonaws.com/604162273930227305.jpg",
+                      "__v": 0
+                    }
                   ],
                   "isAuthor": false,
                   "isScrapped": true,
@@ -563,31 +552,43 @@
                 "type": "object",
                 "properties": {
                   "title": {
-                    "example": "any"
+                    "example": "안녕하세요 모집글 업데이트 했습니다!",
+                    "type": "string"
                   },
                   "content": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "string"
                   },
                   "state": {
-                    "example": "any"
+                    "example": "Recruiting/Closed/Deleted",
+                    "type": "string"
                   },
                   "categories": {
-                    "example": "any"
+                    "example": ["1", "2", "3"],
+                    "type": "Array"
                   },
                   "regions": {
-                    "example": "any"
+                    "example": ["4715000000"],
+                    "type": "Array"
                   },
                   "date": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "date"
                   },
                   "TO": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "Number"
                   },
                   "regularity": {
-                    "example": "any"
+                    "example": "any",
+                    "type": "boolean"
                   },
                   "imgURL": {
-                    "example": "any"
+                    "example": [
+                      "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%sdafsdaF%B8%EC%A7%80/1.jpg",
+                      "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BmfldskmalEC%9D%B4%EB%AF%B8%EC%A7%80/0.jpg"
+                    ],
+                    "type": "Array"
                   }
                 }
               }
@@ -752,26 +753,26 @@
                 "example": {
                   "success": true,
                   "applylist": [
-                      {
-                          "_id": "63c7a779797e189f9cd515d8",
-                          "app_user": "sssss",
-                          "manager": "dsaklmlkmdaslkfml",
-                          "fid": 44,
-                          "due_date": "2023-01-21T08:41:02.982Z",
-                          "accept": "Pending",
-                          "apply_cnt": 2,
-                          "__v": 0
-                      },
-                      {
-                          "_id": "63c7a7a5797e189f9cd515dc",
-                          "app_user": "dsadsfas855",
-                          "manager": "dsaklmlkmdaslkfml",
-                          "fid": 44,
-                          "due_date": "2023-01-21T08:02:45.173Z",
-                          "accept": "Pending",
-                          "apply_cnt": 1,
-                          "__v": 0
-                      }
+                    {
+                      "_id": "63c7a779797e189f9cd515d8",
+                      "app_user": "sssss",
+                      "manager": "dsaklmlkmdaslkfml",
+                      "fid": 44,
+                      "due_date": "2023-01-21T08:41:02.982Z",
+                      "accept": "Pending",
+                      "apply_cnt": 2,
+                      "__v": 0
+                    },
+                    {
+                      "_id": "63c7a7a5797e189f9cd515dc",
+                      "app_user": "dsadsfas855",
+                      "manager": "dsaklmlkmdaslkfml",
+                      "fid": 44,
+                      "due_date": "2023-01-21T08:02:45.173Z",
+                      "accept": "Pending",
+                      "apply_cnt": 1,
+                      "__v": 0
+                    }
                   ]
                 }
               }
@@ -820,23 +821,23 @@
                 "example": {
                   "success": true,
                   "applicant": {
-                      "hobbies": ["3"],
-                      "_id": "63be0ad937bdda1077057278",
-                      "uid": "vessgod",
-                      "password": "$2b$10$gocA2.6kwu0Gj92fbv/UV.6l6H.wntUCwO6iZa31kr3nbUxVZ9cwu",
-                      "name": "heekang",
-                      "sex": "Female",
-                      "birth": "1999-04-03T00:00:00.000Z",
-                      "email": "vessgod@gmail.com",
-                      "certificationKey": "l0o4Lpwo/Yi9POjpb1w3O3tdfWGFTLNk3fCyqQbBco4QUGLQcNyM6/2dYVxWtDqVlZh4ElGwBt7YRrcyv7WYlw==",
-                      "__v": 0,
-                      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmUwYWQ5MzdiZGRhMTA3NzA1NzI3OCIsInVpZCI6InZlc3Nnb2QiLCJuYW1lIjoiaGVla2FuZyIsInNleCI6IkZlbWFsZSIsImJpcnRoIjoiMTk5OS0wNC0wM1QwMDowMDowMC4wMDBaIiwiZW1haWwiOiJ2ZXNzZ29kQGdtYWlsLmNvbSIsImNlcnRpZmljYXRpb25LZXkiOiJsMG80THB3by9ZaTlQT2pwYjF3M08zdGRmV0dGVExOazNmQ3lxUWJCY280UVVHTFFjTnlNNi8yZFlWeFd0RHFWbFpoNEVsR3dCdDdZUnJjeXY3V1lsdz09IiwicHJvZmlsZUltZyI6Imh0dHBzOi8vb3VyYi5zMy5hcC1ub3J0aGVhc3QtMi5hbWF6b25hd3MuY29tLzk5MzE2NzM0MDAyMDA0MjQucG5nIiwibmlja25hbWUiOiJzc3NzcyIsImRlc2NyaXB0aW9uIjoiaGhpaGloaWhpaGloaWhpaGloaSIsImhvYmJ5MSI6ImdhbWUiLCJob2JieTIiOiIxNDg0NjUiLCJob2JieTMiOiJmb290YmFsbCJ9LCJpYXQiOjE2NzM0MTMyMDN9.GD7wlW7-FE03VTOc7qxZ-j5AdHsIePxaQG4tTZixnFU",
-                      "description": "hhihihihihihihihihi",
-                      "hobby1": "game",
-                      "hobby2": "148465",
-                      "hobby3": "football",
-                      "nickname": "sssss",
-                      "profileImg": "https://ourb.s3.ap-northeast-2.amazonaws.com/9931673400200424.png"
+                    "hobbies": ["3"],
+                    "_id": "63be0ad937bdda1077057278",
+                    "uid": "vessgod",
+                    "password": "$2b$10$gocA2.6kwu0Gj92fbv/UV.6l6H.wntUCwO6iZa31kr3nbUxVZ9cwu",
+                    "name": "heekang",
+                    "sex": "Female",
+                    "birth": "1999-04-03T00:00:00.000Z",
+                    "email": "vessgod@gmail.com",
+                    "certificationKey": "l0o4Lpwo/Yi9POjpb1w3O3tdfWGFTLNk3fCyqQbBco4QUGLQcNyM6/2dYVxWtDqVlZh4ElGwBt7YRrcyv7WYlw==",
+                    "__v": 0,
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmUwYWQ5MzdiZGRhMTA3NzA1NzI3OCIsInVpZCI6InZlc3Nnb2QiLCJuYW1lIjoiaGVla2FuZyIsInNleCI6IkZlbWFsZSIsImJpcnRoIjoiMTk5OS0wNC0wM1QwMDowMDowMC4wMDBaIiwiZW1haWwiOiJ2ZXNzZ29kQGdtYWlsLmNvbSIsImNlcnRpZmljYXRpb25LZXkiOiJsMG80THB3by9ZaTlQT2pwYjF3M08zdGRmV0dGVExOazNmQ3lxUWJCY280UVVHTFFjTnlNNi8yZFlWeFd0RHFWbFpoNEVsR3dCdDdZUnJjeXY3V1lsdz09IiwicHJvZmlsZUltZyI6Imh0dHBzOi8vb3VyYi5zMy5hcC1ub3J0aGVhc3QtMi5hbWF6b25hd3MuY29tLzk5MzE2NzM0MDAyMDA0MjQucG5nIiwibmlja25hbWUiOiJzc3NzcyIsImRlc2NyaXB0aW9uIjoiaGhpaGloaWhpaGloaWhpaGloaSIsImhvYmJ5MSI6ImdhbWUiLCJob2JieTIiOiIxNDg0NjUiLCJob2JieTMiOiJmb290YmFsbCJ9LCJpYXQiOjE2NzM0MTMyMDN9.GD7wlW7-FE03VTOc7qxZ-j5AdHsIePxaQG4tTZixnFU",
+                    "description": "hhihihihihihihihihi",
+                    "hobby1": "game",
+                    "hobby2": "148465",
+                    "hobby3": "football",
+                    "nickname": "sssss",
+                    "profileImg": "https://ourb.s3.ap-northeast-2.amazonaws.com/9931673400200424.png"
                   }
                 }
               }
@@ -889,7 +890,8 @@
                 "type": "object",
                 "properties": {
                   "accept": {
-                    "example": "Accepted"
+                    "example": "Accepted",
+                    "type": "string"
                   }
                 }
               }
