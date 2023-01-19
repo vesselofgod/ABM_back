@@ -4,6 +4,7 @@ const router = express.Router();
 const Feed = require("../../model/feed");
 const Match = require("../../model/match");
 const User = require("../../model/user");
+const Region = require("../../model/region").region;
 const utils = require("../../utils.js");
 const due = 3;
 
@@ -85,17 +86,29 @@ router.get("/recruit/:fid", async (req, res) => {
 });
 
 router.get("/recruit/:fid/:app_user", async (req, res) => {
-  //내가 신청한 모임에 대한 것을 관리하는 페이지
+  //신청자에 대한 프로필 정보를 보는 페이지
   try {
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
     const app_user = req.params.app_user;
+    const fid = req.params.fid;
+    const isAccepted = false;
 
     let applicant = await User.findOne({
       nickname: app_user,
     });
 
-    if (applicant == null) {
+    let region = await Region.findOne({
+      region_code: applicant.interest_region,
+    });
+
+    let match = await Match.findOne({
+      fid: fid,
+      app_user: app_user,
+    });
+    
+    if (match != null && match.accept == "Accepted") isAccepted = true;
+    if (applicant == null || match == null || region == null) {
       return res.status(401).json({
         success: false,
         error: "applicant not found",
@@ -105,6 +118,9 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
     return res.status(200).json({
       success: true,
       applicant: applicant,
+      region1: region.region,
+      region2: region.district,
+      isAccepted: isAccepted,
     });
   } catch (err) {
     console.log(err);
