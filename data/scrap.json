@@ -1,0 +1,26 @@
+[
+  {
+    "user": "nickname3",
+    "fid": 1
+  },
+  {
+    "user": "nickname2",
+    "fid": 1
+  },
+  {
+    "user": "nickname3",
+    "fid": 2
+  },
+  {
+    "user": "nickname3",
+    "fid": 5
+  },
+  {
+    "user": "nickname3",
+    "fid": 4
+  },
+  {
+    "user": "nickname1",
+    "fid": 2
+  }
+]

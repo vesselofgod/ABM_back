@@ -1,0 +1,50 @@
+[
+  {
+    "can_reapply": true,
+    "accept": "Pending",
+    "app_user": "nickname3",
+    "manager": "nickname1",
+    "fid": 4,
+    "due_date": "2023-01-20T07:44:53.321+00:00"
+  },
+  {
+    "can_reapply": true,
+    "accept": "Rejected",
+    "app_user": "nickname3",
+    "manager": "nickname2",
+    "fid": 5,
+    "due_date": "2023-03-20T07:44:53.321+00:00"
+  },
+  {
+    "can_reapply": true,
+    "accept": "Pending",
+    "app_user": "nickname1",
+    "manager": "nickname2",
+    "fid": 5,
+    "due_date": "2023-01-27T07:44:53.321+00:00"
+  },
+  {
+    "can_reapply": true,
+    "accept": "Pending",
+    "app_user": "nickname2",
+    "manager": "nickname1",
+    "fid": 3,
+    "due_date": "2023-02-27T07:44:53.321+00:00"
+  },
+  {
+    "can_reapply": true,
+    "accept": "Accepted",
+    "app_user": "nickname2",
+    "manager": "nickname1",
+    "fid": 1,
+    "due_date": "2023-01-29T07:44:53.321+00:00"
+  },
+  {
+    "can_reapply": false,
+    "accept": "Rejected",
+    "app_user": "nickname3",
+    "manager": "nickname1",
+    "fid": 1,
+    "due_date": "2023-01-20T07:44:53.321+00:00"
+  }
+]
