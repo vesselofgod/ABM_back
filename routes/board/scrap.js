@@ -6,7 +6,7 @@ const utils = require("../../utils.js");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  //Hello World 데이터 반환
+  //자신이 스크랩한 게시글을 보여주는 API
   try {
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);

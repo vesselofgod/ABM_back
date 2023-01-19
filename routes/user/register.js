@@ -8,11 +8,6 @@ const Iamport = require("iamport-rest-client-nodejs");
 const axios = require("axios");
 require("dotenv").config();
 
-router.get("/", (req, res) => {
-  //Hello World 데이터 반환
-  res.send("register page");
-});
-
 router.post("/checkUserIdExist", async (req, res) => {
   const uid = req.body.uid;
   let user = await User.findOne({ uid: uid });

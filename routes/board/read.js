@@ -7,12 +7,6 @@ const Scrap = require("../../model/scrap");
 const Match = require("../../model/match");
 const utils = require("../../utils.js");
 
-router.get("/", async (req, res) => {
-  //메인화면에 필요한 정보를 제공함.
-  //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면 이에 대한 정보를 쭉 뿌려주면 된다.
-  res.send("read page");
-});
-
 router.get("/recruit", async (req, res) => {
   //메인화면에 필요한 정보를 제공함.
   //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면 이에 대한 정보를 쭉 뿌려주면 된다.
