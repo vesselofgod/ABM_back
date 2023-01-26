@@ -6,7 +6,7 @@ const deviceSchema = mongoose.Schema({
     type: String,
   },
   uid: {
-    type: Number,
+    type: String,
   },
   tokenExp:{
     type: Date,
