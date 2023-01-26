@@ -37,11 +37,10 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
     if (images.length == 0) {
       //이미지가 없는 경우
       //이것도 url 링크도 없는 경우에만 실행해야 한다.
-      if(imgURL.length ==0){
+      if (imgURL.length == 0) {
         thumbnail = await Category.findOne({ category_code: categories[0] });
         thumbnail = thumbnail.default_img;
-      }
-      else{
+      } else {
         thumbnail = imgURL[0];
       }
     } else {

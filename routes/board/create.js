@@ -9,11 +9,6 @@ const Region = require("../../model/region").region;
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  //Hello World 데이터 반환
-  res.send("create page");
-});
-
 router.post("/", upload.array("images", 5), async (req, res) => {
   try {
     const { title, content, categories, regions, date, TO, regularity } =
@@ -57,7 +52,7 @@ router.post("/", upload.array("images", 5), async (req, res) => {
         district: reg.district,
         region_code: reg.region_code,
       };
-      regionData.push(jsonData)
+      regionData.push(jsonData);
     }
 
     let feed = new Feed({

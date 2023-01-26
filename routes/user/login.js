@@ -1,10 +1,8 @@
 // express 모듈 내의 Router를 이용해서 회원정보를 post 방식으로 요청 받으면 DB에 회원정보 저장
 const express = require("express");
 const User = require("../../model/user");
-const Device = require("../../model/device")
+const Device = require("../../model/device");
 const router = express.Router();
-const admin = require("../../config/notice.config");
-const {JWT} = require("google-auth-library")
 require("dotenv").config();
 /*
 TODO: 로그인 시에 device token을 받은 다음에 device table에 저장한다.
@@ -43,7 +41,7 @@ router.post("/", async (req, res) => {
         } else {
           setProfile = true;
         }
-        
+
         await Device.deleteOne({
           device_token: device_token,
         });
@@ -53,7 +51,7 @@ router.post("/", async (req, res) => {
           uid: uid,
           //TODO : token 만료일 추가
         });
-    
+
         await device.save((err, doc) => {
           if (err)
             return res.status(401).json({

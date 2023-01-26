@@ -11,8 +11,7 @@ require("dotenv").config();
 
 router.get("/", async (req, res) => {
   let categories = await Category.find();
-  console.log(categories)
-  if (categories == null || categories.length ==0) {
+  if (categories == null || categories.length == 0) {
     return res.status(400).json({
       success: false,
       errors: "Failed to load category.",
@@ -20,7 +19,7 @@ router.get("/", async (req, res) => {
   }
   return res.status(200).json({
     success: true,
-    categories: categories
+    categories: categories,
   });
 });
 
