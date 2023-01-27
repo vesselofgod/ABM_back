@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require("mongoose");
 
 const deviceSchema = mongoose.Schema({
@@ -8,9 +7,10 @@ const deviceSchema = mongoose.Schema({
   uid: {
     type: String,
   },
-  tokenExp:{
+  timestamp:{
+    //일정 시간동안 timestamp가 업데이트되지 않았다면 device token을 다시 받음
     type: Date,
-  }
+  },
 });
 
 // 데이터베이스 모델을 정의
