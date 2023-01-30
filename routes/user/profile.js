@@ -112,4 +112,50 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
   }
 });
 
+router.patch("/changeProfile", upload.single("image"), async (req, res) => {
+  //일단 기획안에서 프로필 수정 시 변경가능한 정보만 수정
+  try {
+    const { description, hobbies, region } = req.body;
+    const profileImg = req.file;
+    const token = req.header("authorization").split(" ")[1];
+    const hobbiesset = new Set(hobbies);
+    if (hobbies.length != hobbiesset.size) {
+      return res.status(401).json({
+        success: false,
+        errors: [{ msg: "Selected hobbies are duplicated." }],
+      });
+    }
+
+    const user_data = utils.parseJWTPayload(token);
+    const user_key = user_data.user._id;
+    await User.updateOne(
+      { _id: user_key },
+      {
+        description: description,
+        profileImg: profileImg.location,
+        hobbies: hobbies,
+        interest_region: region,
+      }
+    );
+
+    const user = await User.findOne({ _id: user_key });
+
+    user.generateToken((err) => {
+      if (err) {
+        return res.status(400).send(err);
+      } else {
+        return res.status(200).json({
+          success: true,
+          token: user.token,
+        });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      errors: [{ msg: error }],
+    });
+  }
+});
+
 module.exports = router;
