@@ -141,6 +141,7 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
 
 router.post("/application/:fid", async (req, res) => {
   //match 신청 넣는 API
+  //지원자가 match 신청을 하면 feed 작성자에게 푸시 알림이 가도록 설정
   try {
     let date = new Date();
     const fid = req.params.fid;
@@ -154,7 +155,7 @@ router.post("/application/:fid", async (req, res) => {
     });
     if (existmatch.length != 0) {
       if (existmatch.length > 1) {
-        return res.status(402).json({
+        return res.status(401).json({
           success: false,
           err: "state error : Only one application can exist.",
         });
@@ -172,9 +173,34 @@ router.post("/application/:fid", async (req, res) => {
             apply_cnt: existmatch[0].apply_cnt + 1,
           }
         );
-        return res.status(200).json({
-          success: true,
+
+        let notice = new Notice({
+          user: feed.author,
+          title: "모임 매칭 신청이 들어왔습니다.",
+          body: "매칭 신청화면에서 확인해주세요!",
+          link: fid,
+          type: "match",
         });
+        let manager_info = await User.findOne({ nickname: feed.author });
+        let device_tokens = await Device.find({ uid: manager_info.uid });
+        let is_send = await utils.sendNotice(device_tokens, notice);
+
+        if (!is_send) {
+          return res.status(402).json({
+            success: false,
+            err: "Fail to sending notice message",
+          });
+        }
+
+        await notice.save((err, doc) => {
+          if (err)
+            return res.status(400).json({
+              success: false,
+              err: "DB error",
+            });
+        });
+    
+        return res.status(200).json({ success: true });
       }
     } else {
       let match = new Match({
@@ -190,7 +216,7 @@ router.post("/application/:fid", async (req, res) => {
           console.log(err);
           return res.status(400).json({
             success: false,
-            err,
+            err: "DB error",
           });
         }
         return res.status(200).json({
