@@ -3,6 +3,7 @@ const express = require("express");
 const User = require("../../model/user");
 const Category = require("../../model/category");
 const Device = require("../../model/device");
+const Notice = require("../../model/notice");
 const admin = require("../../config/notice.config");
 const { JWT } = require("google-auth-library");
 const utils = require("../../utils.js");
@@ -43,73 +44,21 @@ function getAccessToken() {
   });
 }
 
-router.post("/", async function (req, res, next) {
-  const token = req.header("authorization").split(" ")[1];
-  const user_data = utils.parseJWTPayload(token);
-
-  let device_tokens = await Device.find({ uid: user_data.user.uid });
-
-  //console.log(device_tokens);
-  //target_token은 푸시 메시지를 받을 디바이스의 토큰값입니다
-  if (device_tokens.length == 0) {
-    return res.status(401).json({
-      success: false,
-      err: "device token was not found.",
+router.get("/", async (req, res) => {
+  try {
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    let notices = await Notice.find({ uid: user_data.user.uid });
+    return res.status(200).json({
+      success: true,
+      notices: notices,
     });
-  } else if (device_tokens.length == 1) {
-    let message = {
-      notification: {
-        title: "테스트 발송",
-        body: "앱 확인해보세요!",
-      },
-      data: {
-        title: "테스트 데이터 발송",
-        body: "데이터가 잘 가나요?",
-        style: "good",
-      },
-      token: device_tokens[0],
-    };
-
-    admin
-      .messaging()
-      .send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log("Successfully sent message:", response);
-        return res.status(200).json({
-          success: true,
-        });
-      })
-      .catch((error) => {
-        console.log("Error sending message:", error);
-        return res.status(400).json({
-          success: false,
-        });
-      });
-  } else {
-    let message = {
-      data: {
-        title: "테스트 데이터 발송",
-        body: "데이터가 잘 가나요?",
-        style: "good",
-      },
-      token: device_tokens,
-    };
-
-    admin
-      .messaging()
-      .sendMulticast(message)
-      .then((response) => {
-        if (response.failureCount > 0) {
-          const failedTokens = [];
-          response.responses.forEach((resp, idx) => {
-            if (!resp.success) {
-              failedTokens.push(registrationTokens[idx]);
-            }
-          });
-          console.log("List of tokens that caused failures: " + failedTokens);
-        }
-      });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
   }
 });
 

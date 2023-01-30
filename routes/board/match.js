@@ -5,6 +5,8 @@ const Feed = require("../../model/feed");
 const Match = require("../../model/match");
 const User = require("../../model/user");
 const Region = require("../../model/region").region;
+const Notice = require("../../model/notice");
+const Device = require("../../model/device");
 const utils = require("../../utils.js");
 const due = 3;
 
@@ -107,8 +109,8 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
     if (match != null && match.accept == "Accepted") {
       isAccepted = true;
     } else if (
-      match != null && (match.accept == "Pending" ||
-      match.accept == "Rejected")
+      match != null &&
+      (match.accept == "Pending" || match.accept == "Rejected")
     ) {
       isAccepted = false;
     } else {
@@ -209,8 +211,7 @@ router.post("/application/:fid", async (req, res) => {
 router.patch("/recruit/:fid/:app_user", async (req, res) => {
   //match 수락/거절 API
   //req.params.uid를 통해서 신청자의 id를 확인하고, 자신에게 보낸 match 신청을 수락 or 거절함.
-  //그런데 아마 uid하고 fid가 둘 다 필요할 거 같은데 parameter로 받지 말고 req.body로 받아야하나...
-  //토큰 받아서 자기가 작성자인지 확인해야하나...
+  //patch 신호가 오면 보낸 data의 link와 type을 토대로 알림 클릭 시 띄울 페이지를 결정함
   try {
     const fid = req.params.fid;
     const app_user = req.params.app_user;
@@ -226,9 +227,32 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
         success: false,
         err: "Match does not found.",
       });
-    return res.status(200).json({
-      success: true,
+
+    let notice = new Notice({
+      user: app_user,
+      title: "신청한 모임 매칭이 완료되었습니다.",
+      body: "모임 게시글에서 결과를 확인해주세요!",
+      link: fid,
+      type: "match",
     });
+    let app_user_info = await User.findOne({ nickname: app_user });
+    let device_tokens = await Device.find({ uid: app_user_info.uid });
+    let is_send = await utils.sendNotice(device_tokens, notice);
+    if (!is_send) {
+      return res.status(402).json({
+        success: false,
+        err: "Fail to sending notice message",
+      });
+    }
+    await notice.save((err, doc) => {
+      if (err)
+        return res.status(401).json({
+          success: false,
+          err,
+        });
+    });
+
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
