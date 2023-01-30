@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
+const bcrypt = require("bcrypt");
+
 
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
@@ -12,6 +14,7 @@ const city = require("../../data/city.json");
 
 const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
+const saltRounds = 10;
 
 router.get("/setRegion", async (req, res) => {
   try {
@@ -154,6 +157,46 @@ router.patch("/changeProfile", upload.single("image"), async (req, res) => {
     return res.status(500).json({
       success: false,
       errors: [{ msg: error }],
+    });
+  }
+});
+
+router.patch("/changePassword", async (req, res) => {
+  //비밀번호 변경 API
+  //기존 비밀번호를 확인하고 새로운 비밀번호를 암호화하여 저장함.
+  try {
+    const {old_password, new_password} = req.body;
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    const password = await bcrypt.hash(new_password, saltRounds);
+    
+    let user = await User.findOne({ uid: user_data.user.uid });
+    var check = await bcrypt.compare(old_password, user.password);
+    if(!check)
+      return res.status(401).json({
+        success: false,
+        error: "password is incorrect ",
+      });
+    await User.updateOne({ uid: user_data.user.uid }, { password: password });
+    user.generateToken((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(400).json({
+          success: false,
+          error: "Fail to new token generation",
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          token: user.token,
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      errors: "Server error occur",
     });
   }
 });
