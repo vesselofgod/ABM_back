@@ -17,3 +17,9 @@ mongoimport --jsonArray --db test --collection counters --file data/counter.json
 
 mongosh --eval "db.images.drop()" --quiet
 mongoimport --jsonArray --db test --collection images --file data/image.json
+
+mongosh --eval "db.match.drop()" --quiet
+mongoimport --jsonArray --db test --collection matches --file data/match.json
+
+mongosh --eval "db.scrap.drop()" --quiet
+mongoimport --jsonArray --db test --collection scraps --file data/scrap.json
