@@ -117,9 +117,12 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
 router.patch("/changeProfile", upload.single("image"), async (req, res) => {
   //일단 기획안에서 프로필 수정 시 변경가능한 정보만 수정
   try {
-    const { description, hobbies, region, name, sex, birth, email } = req.body;
+    const { description, hobbies, region, name, sex, birth, email, imgURL } =
+      req.body;
     const profileImg = req.file;
     const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+
     const hobbiesset = new Set(hobbies);
     if (hobbies.length != hobbiesset.size) {
       return res.status(401).json({
@@ -127,27 +130,40 @@ router.patch("/changeProfile", upload.single("image"), async (req, res) => {
         errors: [{ msg: "Selected hobbies are duplicated." }],
       });
     }
+    if (imgURL) {
+      await User.updateOne(
+        { _id: user_data.user._id },
+        {
+          description: description,
+          hobbies: hobbies,
+          interest_region: region,
+          name: name,
+          sex: sex,
+          birth: birth,
+          email: email,
+        }
+      );
+    } else {
+      await User.updateOne(
+        { _id: user_data.user._id },
+        {
+          description: description,
+          hobbies: hobbies,
+          interest_region: region,
+          profileImg: profileImg.location,
+          name: name,
+          sex: sex,
+          birth: birth,
+          email: email,
+        }
+      );
+    }
 
-    const user_data = utils.parseJWTPayload(token);
-    const user_key = user_data.user._id;
-    await User.updateOne(
-      { _id: user_key },
-      {
-        description: description,
-        profileImg: profileImg.location,
-        hobbies: hobbies,
-        interest_region: region,
-        name: name,
-        sex: sex,
-        birth: birth,
-        email: email,
-      }
-    );
-
-    const user = await User.findOne({ _id: user_key });
+    const user = await User.findOne({ _id: user_data.user._id });
 
     user.generateToken((err) => {
       if (err) {
+        console.log(err)
         return res.status(400).send(err);
       } else {
         return res.status(200).json({
@@ -156,10 +172,11 @@ router.patch("/changeProfile", upload.single("image"), async (req, res) => {
         });
       }
     });
-  } catch (error) {
+  } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
-      errors: [{ msg: error }],
+      errors: [{ msg: err }],
     });
   }
 });
