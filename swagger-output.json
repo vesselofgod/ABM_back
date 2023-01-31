@@ -390,6 +390,22 @@
                   },
                   "image": {
                     "type": "image file"
+                  },
+                  "name": {
+                    "example": "heekang jang",
+                    "type": "string"
+                  },
+                  "sex": {
+                    "example": "Male",
+                    "type": "string"
+                  },
+                  "birth": {
+                    "example": "2001-05-19",
+                    "type": "date"
+                  },
+                  "email": {
+                    "example": "userid1234@gmail.com",
+                    "type": "string"
                   }
                 }
               }
