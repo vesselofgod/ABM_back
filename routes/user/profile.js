@@ -4,7 +4,6 @@ const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
 const bcrypt = require("bcrypt");
 
-
 const dbConfig = require("../../config/db.config");
 const User = require("../../model/user");
 const upload = require("../../middleware/s3");
@@ -118,7 +117,7 @@ router.post("/setProfile", upload.single("image"), async (req, res, next) => {
 router.patch("/changeProfile", upload.single("image"), async (req, res) => {
   //일단 기획안에서 프로필 수정 시 변경가능한 정보만 수정
   try {
-    const { description, hobbies, region } = req.body;
+    const { description, hobbies, region, name, sex, birth, email } = req.body;
     const profileImg = req.file;
     const token = req.header("authorization").split(" ")[1];
     const hobbiesset = new Set(hobbies);
@@ -138,6 +137,10 @@ router.patch("/changeProfile", upload.single("image"), async (req, res) => {
         profileImg: profileImg.location,
         hobbies: hobbies,
         interest_region: region,
+        name: name,
+        sex: sex,
+        birth: birth,
+        email: email,
       }
     );
 
@@ -165,17 +168,17 @@ router.patch("/changePassword", async (req, res) => {
   //비밀번호 변경 API
   //기존 비밀번호를 확인하고 새로운 비밀번호를 암호화하여 저장함.
   try {
-    const {old_password, new_password} = req.body;
+    const { old_password, new_password } = req.body;
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
     const password = await bcrypt.hash(new_password, saltRounds);
-    
+
     let user = await User.findOne({ uid: user_data.user.uid });
     var check = await bcrypt.compare(old_password, user.password);
-    if(!check)
+    if (!check)
       return res.status(401).json({
         success: false,
-        error: "password is incorrect ",
+        error: "password is incorrect",
       });
     await User.updateOne({ uid: user_data.user.uid }, { password: password });
     user.generateToken((err) => {
@@ -193,7 +196,7 @@ router.patch("/changePassword", async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       success: false,
       errors: "Server error occur",
