@@ -91,7 +91,7 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
     const app_user = req.params.app_user;
     const fid = req.params.fid;
-    let isAccepted;
+    let status;
 
     let applicant = await User.findOne({
       nickname: app_user,
@@ -107,14 +107,13 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
     });
 
     if (match != null && match.accept == "Accepted") {
-      isAccepted = true;
-    } else if (
-      match != null &&
-      (match.accept == "Pending" || match.accept == "Rejected")
-    ) {
-      isAccepted = false;
+      status = "Accepted";
+    } else if (match != null && match.accept == "Pending") {
+      status = "Pending";
+    } else if (match != null && match.accept == "Rejected") {
+      status = "Rejected";
     } else {
-      isAccepted = null;
+      status = null;
     }
     if (applicant == null || match == null || region == null) {
       return res.status(401).json({
@@ -128,7 +127,7 @@ router.get("/recruit/:fid/:app_user", async (req, res) => {
       applicant: applicant,
       region1: region.region,
       region2: region.district,
-      isAccepted: isAccepted,
+      status: status,
     });
   } catch (err) {
     console.log(err);
@@ -199,7 +198,7 @@ router.post("/application/:fid", async (req, res) => {
               err: "DB error",
             });
         });
-    
+
         return res.status(200).json({ success: true });
       }
     } else {
