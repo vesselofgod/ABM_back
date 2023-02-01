@@ -20,7 +20,8 @@ const noticeSchema = mongoose.Schema({
     type: String,
   },
   type: {
-    //매치 성사알림일 경우 type은 match,
+    //매치 성사 알림일 경우 type은 match,
+    //매치 신청 알림의 경우 type은 apply,
     //채팅 알림일 경우 type은 chat
     type: String,
   }

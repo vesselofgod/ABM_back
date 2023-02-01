@@ -179,7 +179,7 @@ router.post("/application/:fid", async (req, res) => {
           title: "모임 매칭 신청이 들어왔습니다.",
           body: "매칭 신청화면에서 확인해주세요!",
           link: fid,
-          type: "match",
+          type: "apply",
         });
         let manager_info = await User.findOne({ nickname: feed.author });
         let device_tokens = await Device.find({ uid: manager_info.uid });
