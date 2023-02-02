@@ -4,6 +4,7 @@ const router = express.Router();
 const register = require("./user/register.js");
 const auth = require("./user/auth.js");
 const login = require("./user/login.js");
+const logout = require("./user/logout.js")
 const profile = require("./user/profile.js");
 const createpage = require("./board/create.js");
 const readpage = require("./board/read.js");
@@ -15,6 +16,7 @@ const notice = require("./user/notice.js");
 router.use("/register", register);
 router.use("/auth", auth);
 router.use("/login", login);
+router.use("/logout", logout);
 router.use("/profile", profile);
 router.use("/create", createpage);
 router.use("/read", readpage);
