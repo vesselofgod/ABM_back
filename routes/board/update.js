@@ -2,12 +2,14 @@ const express = require("express");
 const Feed = require("../../model/feed");
 const Feedlog = require("../../model/feedlog");
 const Image = require("../../model/image");
-const Scrap = require("../../model/scrap");
 const utils = require("../../utils.js");
 const upload = require("../../middleware/s3");
 const Category = require("../../model/category");
-const e = require("express");
+const Match = require("../../model/match");
 const Region = require("../../model/region").region;
+const Notice = require("../../model/notice");
+const Device = require("../../model/device");
+const User = require("../../model/user");
 
 const router = express.Router();
 
@@ -116,9 +118,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
     //이미지 url로 날라올 경우 이미지를 유지한다.
     //이미지를 서치하고 있으면 그대로 쓰고 없으면 그냥 날림. 쿼리 하나만 추가하면 될 거 같음.
     //기존 이미지 테이블 지우기.
-    console.log(imgURL);
-    let result = await Image.deleteMany({ fid: fid, URL: { $nin: imgURL } });
-    console.log(result);
+    await Image.deleteMany({ fid: fid, URL: { $nin: imgURL } });
     await Feed.updateOne(
       { fid: fid },
       {
@@ -148,9 +148,53 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      success: true,
-    });
+    if (state == "Closed" || state == "Deleted") {
+      let notice;
+      let is_send;
+      let applicants = [];
+      let matches = await Match.find({ fid: fid });
+      for (let i = 0; i < matches.length; i++) {
+        user_data = await User.findOne({ nickname: matches[i].app_user });
+        applicants.push(user_data.uid);
+      }
+
+      if (state == "Closed") {
+        notice = new Notice({
+          user: feed.author,
+          title: "매칭 취소 안내",
+          body: "모집이 마감되어 매칭이 자동으로 취소되었습니다.",
+          link: fid,
+          type: "closed",
+        });
+        await Match.updateMany({ fid: fid }, { accept: "Rejected" });
+      }
+      if (state == "Deleted") {
+        notice = new Notice({
+          user: feed.author,
+          title: "매칭 취소 안내",
+          body: "글이 삭제되어 매칭이 자동으로 삭제되었습니다.",
+          link: fid,
+          type: "deleted",
+        });
+        await Match.deleteMany({ fid: fid });
+      }
+      let device_tokens = [];
+      for (let i = 0; i < applicants.length; i++) {
+        let devices = await Device.find({ uid: applicants[i] });
+        for (let j = 0; j < devices.length; j++) {
+          device_tokens.push(devices[j]);
+        }
+      }
+      if(device_tokens.length != 0) is_send = await utils.sendNotice(device_tokens, notice);
+      if (!is_send) {
+        return res.status(402).json({
+          success: false,
+          err: "Fail to sending notice message",
+        });
+      }
+    }
+
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
