@@ -25,7 +25,7 @@
   },
   {
     "apply_cnt": 1,
-    "accept": "Pending",
+    "accept": "Rejected",
     "app_user": "nickname2",
     "manager": "nickname1",
     "fid": 3,
@@ -41,7 +41,7 @@
   },
   {
     "apply_cnt": 2,
-    "accept": "Rejected",
+    "accept": "Pending",
     "app_user": "nickname3",
     "manager": "nickname1",
     "fid": 1,
