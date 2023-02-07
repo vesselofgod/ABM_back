@@ -5,8 +5,11 @@ const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 const http = require("http");
+const v4 = require("uuid").v4;
 const Message = require("./model/message");
-
+const Room = require("./model/room");
+const User = require("./model/user").User;
+const utils = require("./utils.js");
 //express 사용
 const app = express();
 const server = http.createServer(app);
@@ -58,20 +61,54 @@ function countRoom(roomName) {
 }
 
 io.on("connection", (socket) => {
+  //토큰 받기
   console.log("user connected");
 
-  socket.on("join_room", (data) => {
-    if (countRoom(data.room) == 0) {
+  socket.on("join_room", async (data) => {
+    const token = data.token.split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    let uid = user_data.user.uid;
+    let user = await User.findOne({ uid: uid });
+    let room_id = data.room;
+
+    if (data.room == undefined || countRoom(data.room) == 0) {
       //방이 처음 만들어짐.
       //피드와 연결해서 초기 톡방 설정 구현
+      //톡방 title과 썸네일의 경우 생성 페이지에서 받아와야함.
+      let newRoom = new Room({
+        room_id: v4(), //uuid v4를 이용해서 random unique id 얻어냄.
+        title: data.title,
+        fid: data.fid,
+        thumbnail: data.thumbnail,
+        admin: user,
+        users: [user],
+        block: [],
+      });
+      await newRoom.save((err) => {
+        if (err) console.log(err);
+      });
+      room_id = newRoom.room_id;
+    } else {
+      // user를 room에 push하면 된다.
+      let room = await Room.findOne({ room_id: room_id });
+      let find_user = await Room.findOne({
+        users: { $elemMatch: { uid: uid } },
+      });
+      console.log(find_user);
+      if (find_user == undefined) {
+        console.log(tst);
+        room.users.push(user);
+        room.save();
+      }
     }
-    socket.join(data.room);
-    socket.to(data.room).emit("welcome", data);
+    socket.join(room_id);
+    socket.to(room_id).emit("welcome", data);
     //현재 들어가있는 방을 표시 (기본적으로 User와 Server 사이에 private room이 1개 있음)
     console.log(socket.rooms);
   });
 
-  socket.on("leave_room", (data) => {
+  socket.on("leave_room", async (data) => {
+    console.log("leave room", result);
     socket.to(data.room).emit("bye", data);
     socket.leave(data.room);
     console.log(socket.rooms);
@@ -86,10 +123,12 @@ io.on("connection", (socket) => {
   socket.on("new_message", async (data) => {
     // data : 각종 정보를 담고 있는 payload object
     // data.room message를 보내는 room의 이름 (귓을 위해서는 socket_id를 room으로 사용하면 된다.)
-    // data.user message를 보내는 user의 이름
+    // data.token message를 보내는 user의 token
     // data.message message : 메시지의 본문.
+    const token = data.token.split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
     let newMessage = new Message({
-      user: data.user,
+      user: user_data.user.nickname,
       message: data.message,
       created: new Date(),
       room_id: data.room,
