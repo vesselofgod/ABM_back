@@ -9,7 +9,7 @@ const Match = require("../../model/match");
 const Region = require("../../model/region").region;
 const Notice = require("../../model/notice");
 const Device = require("../../model/device");
-const User = require("../../model/user");
+const User = require("../../model/user").User;
 
 const router = express.Router();
 

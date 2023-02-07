@@ -3,7 +3,7 @@ const router = express.Router();
 
 const Feed = require("../../model/feed");
 const Match = require("../../model/match");
-const User = require("../../model/user");
+const User = require("../../model/user").User;
 const Region = require("../../model/region").region;
 const Notice = require("../../model/notice");
 const Device = require("../../model/device");

@@ -1,6 +1,6 @@
 // express 모듈 내의 Router를 이용해서 회원정보를 post 방식으로 요청 받으면 DB에 회원정보 저장
 const express = require("express");
-const User = require("../../model/user");
+const User = require("../../model/user").User;
 const Category = require("../../model/category");
 const router = express.Router();
 const bcrypt = require("bcryptjs");

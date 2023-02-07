@@ -5,7 +5,7 @@ const getRegions = require("../../model/region").getRegions;
 const bcrypt = require("bcrypt");
 
 const dbConfig = require("../../config/db.config");
-const User = require("../../model/user");
+const User = require("../../model/user").User;
 const upload = require("../../middleware/s3");
 const utils = require("../../utils.js");
 

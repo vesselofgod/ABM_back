@@ -131,4 +131,4 @@ userSchema.statics.findByToken = function (token, callback) {
 // 데이터베이스 모델을 정의
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = {User, userSchema};

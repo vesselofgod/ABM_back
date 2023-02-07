@@ -38,7 +38,8 @@ async function sendNotice(device_tokens, notice) {
     return true;
   } else {
     const token_list = [];
-    for(let i=0; i<device_tokens.length; i++) token_list.push(device_tokens[i].device_token);
+    for (let i = 0; i < device_tokens.length; i++)
+      token_list.push(device_tokens[i].device_token);
     let message = {
       notification: {
         title: notice.title,
@@ -66,9 +67,9 @@ async function sendNotice(device_tokens, notice) {
           return false;
         }
       });
-      return true;
+    return true;
   }
-};
+}
 
 module.exports = {
   parseJWTPayload,
