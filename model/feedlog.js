@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require("mongoose");
 // mongoDB에 회원정보를 저장할 스키마를 regionSchema에 정의
 const feedlogSchema = mongoose.Schema({

@@ -1,4 +1,3 @@
-// models/User.js
 const mongoose = require("mongoose");
 
 // mongoDB에 게시글에 저장할 이미지 스키마를 imageSchema에 정의
