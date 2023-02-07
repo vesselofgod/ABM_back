@@ -14,9 +14,15 @@ const roomSchema = mongoose.Schema({
   thumbnail: {
     type: String,
   },
-  admin: userSchema,
-  users: [userSchema],
-  block: [userSchema],
+  admin: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+  users: {
+    type: Array,
+  },
+  block: {
+    type: Array,
+  },
 });
 
 // 데이터베이스 모델을 정의
