@@ -50,4 +50,24 @@ router.get("/:room_id", async (req, res) => {
   }
 });
 
+router.patch("/:room_id", async (req, res) => {
+  try {
+    //채팅을 제외한 알림 읽음 처리하는 API
+    const room_id = req.params.room_id;
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    await Notice.updateMany(
+      { link: room_id, user: user_data.user.nickname },
+      { isread: true }
+    );
+    return res.status(200).json({ success: true });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
+  }
+});
+
 module.exports = router;
