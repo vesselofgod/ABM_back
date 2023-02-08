@@ -1,0 +1,42 @@
+[
+  {
+    "user": "nickname1",
+    "title": "모임 매칭 신청이 들어왔습니다.",
+    "body": "매칭 신청화면에서 확인해주세요!",
+    "isread": true,
+    "link": "4",
+    "type": "apply"
+  },
+  {
+    "user": "nickname2",
+    "title": "모임 매칭 신청이 들어왔습니다.",
+    "body": "매칭 신청화면에서 확인해주세요!",
+    "isread": false,
+    "link": "5",
+    "type": "apply"
+  },
+  {
+    "user": "nickname3",
+    "title": "신청한 모임 매칭이 완료되었습니다.",
+    "body": "모임 게시글에서 결과를 확인해주세요!",
+    "isread": true,
+    "link": "5",
+    "type": "match"
+  },
+  {
+    "user": "nickname2",
+    "title": "신청한 모임 매칭이 완료되었습니다.",
+    "body": "모임 게시글에서 결과를 확인해주세요!",
+    "isread": false,
+    "link": "4",
+    "type": "match"
+  },
+  {
+    "user": "nickname2",
+    "title": "신청한 모임 매칭이 완료되었습니다.",
+    "body": "모임 게시글에서 결과를 확인해주세요!",
+    "isread": true,
+    "link": "1",
+    "type": "match"
+  }
+]
