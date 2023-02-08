@@ -22,6 +22,7 @@ const roomSchema = mongoose.Schema({
   },
   block: {
     type: Array,
+    default: [],
   },
 });
 
