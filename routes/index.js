@@ -13,6 +13,7 @@ const updatepage = require("./board/update.js");
 const match = require("./board/match.js");
 const scrap = require("./board/scrap.js");
 const notice = require("./user/notice.js");
+const chat = require("./chat/chat.js")
 router.use("/register", register);
 router.use("/auth", auth);
 router.use("/login", login);
@@ -25,7 +26,7 @@ router.use("/update", updatepage);
 router.use("/match", match);
 router.use("/scrap", scrap);
 router.use("/notice", notice);
-
+router.use("/chat", chat);
 //need to change
 const uploadController = require("./user/upload");
 router.use("/upload", uploadController.uploadFiles);
