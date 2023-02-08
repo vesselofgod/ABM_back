@@ -1,0 +1,40 @@
+[
+  {
+    "room_id": "ddcf6a54-ec62-4856-8c7a-0b335d7a3aa6",
+    "title": "종로 영화소모임",
+    "fid": 1,
+    "thumbnail": "https://ourb.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%85%8C%EC%BD%94%EB%A6%AC+%EC%9D%B4%EB%AF%B8%EC%A7%80/1.jpg",
+    "admin": {
+      "uid": "test1",
+      "password": "$2b$10$GTKeq4Irb7wv77ATVP0WH.PWxPkc9P7cxeOoY4hdrm48CUChiszEu",
+      "name": "testuser1",
+      "sex": "Male",
+      "birth": { "$date": "2000-01-01T00:00:00.000Z"},
+      "email": "test1@gmail.com",
+      "certificationKey": "11111111",
+      "profileImg": "https://media.newyorker.com/photos/5cdf1ad7339acf8247bfc768/1:1/w_1525,h_1525,c_limit/Richard-JohnWick.jpg",
+      "nickname": "nickname1",
+      "description": "111111111111111",
+      "interest_region": "1111000000",
+      "hobbies": ["0", "1"]
+    },
+    "users": [
+      {
+        "uid": "test1",
+        "nickname": "nickname1",
+        "profileImg": "https://media.newyorker.com/photos/5cdf1ad7339acf8247bfc768/1:1/w_1525,h_1525,c_limit/Richard-JohnWick.jpg"
+      },
+      {
+        "uid": "test2",
+        "nickname": "nickname2",
+        "profileImg": "https://i.scdn.co/image/ab6761610000e5ebcdce7620dc940db079bf4952"
+      },
+      {
+        "uid": "test3",
+        "nickname": "nickname3",
+        "profileImg": "https://i.scdn.co/image/ab6761610000e5ebcdce7620dc940db079bf4952"
+      }
+    ],
+    "block": []
+  }
+]
