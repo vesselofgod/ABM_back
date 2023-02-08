@@ -62,37 +62,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.patch("/updateTimestamp", async (req, res) => {
+router.patch("/:notice_id", async (req, res) => {
   try {
-    const token = req.header("authorization").split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
-    const device_token = req.body.device_token;
-    let old_token = await Device.findOne({
-      uid: user_data.user.uid,
-      device_token: device_token,
-    });
-
-    if (old_token == null) {
-      let device = new Device({
-        device_token: device_token,
-        uid: uid,
-        timestamp: new Date(),
-      });
-
-      await device.save((err, doc) => {
-        if (err) {
-          return res.status(401).json({
-            success: false,
-            err: "device token was not stored.",
-          });
-        }
-        return res.status(200).json({ success: true });
-      });
-    }
-
-    let result = await Device.updateOne(
-      { device_token: device_token },
-      { timestamp: new Date() }
+    //채팅을 제외한 알림을 읽음 처리하는 API
+    const notice_id = req.params.notice_id;
+    await Notice.updateOne(
+      { _id: notice_id },
+      { isread: true }
     );
     return res.status(200).json({ success: true });
   } catch (err) {
