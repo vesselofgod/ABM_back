@@ -75,7 +75,6 @@ io.on("connection", (socket) => {
       //방이 처음 만들어짐.
       //피드와 연결해서 초기 톡방 설정 구현
       //톡방 title과 썸네일의 경우 생성 페이지에서 받아와야함.
-      console.log("방파라")
       let newRoom = new Room({
         room_id: v4(), //uuid v4를 이용해서 random unique id 얻어냄.
         title: data.title,
@@ -84,19 +83,14 @@ io.on("connection", (socket) => {
         admin: user,
       });
       newRoom.users.push({
-        uid:uid,
-        nickname:user_data.user.nickname,
-        profileImg:user_data.user.profileImg,
-      })
-      console.log("방생성완료")
+        uid: uid,
+        nickname: user_data.user.nickname,
+        profileImg: user_data.user.profileImg,
+      });
 
       await newRoom.save((err) => {
         if (err) {
-          console.log("error 발생!!!!");
           console.log(err);
-        }
-        else{
-          console.log("방저장완료")
         }
       });
 
@@ -107,14 +101,12 @@ io.on("connection", (socket) => {
       let find_user = await Room.findOne({
         users: { $elemMatch: { uid: uid } },
       });
-      console.log("uid :", uid)
-      console.log("find_user : ", find_user)
       if (find_user == undefined) {
         room.users.push({
-          uid:uid,
-          nickname:user_data.user.nickname,
-          profileImg:user_data.user.profileImg,
-        })
+          uid: uid,
+          nickname: user_data.user.nickname,
+          profileImg: user_data.user.profileImg,
+        });
         room.save();
       }
     }
@@ -128,15 +120,10 @@ io.on("connection", (socket) => {
     //TODO : 삭제가 되지 않는 오류 수정
     const token = data.token.split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
-    let result = Room.updateOne(
+    await Room.updateAll(
       { room_id: data.room },
-      {
-        $pullAll: {
-          users: { uid: user_data.user.uid },
-        },
-      }
+      { $pullAll: { users: { uid: user_data.user.uid } } }
     );
-    console.log("leave room", result);
     socket.to(data.room).emit("bye", data);
     socket.leave(data.room);
     console.log(socket.rooms);
