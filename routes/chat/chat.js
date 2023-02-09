@@ -36,10 +36,12 @@ router.get("/:room_id", async (req, res) => {
   //채팅방 입장 시에 메시지 로그를 얻을 수 있는 API
   try {
     const room_id = req.params.room_id;
+    let room = await Room.findOne({room_id: room_id});
     let chats = await Message.find({ room_id: room_id }).sort({ created: -1 });
     return res.status(200).json({
       success: true,
       chats: chats,
+      title: room.title
     });
   } catch (err) {
     console.log(err);
