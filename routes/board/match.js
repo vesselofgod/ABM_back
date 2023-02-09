@@ -179,6 +179,7 @@ router.post("/application/:fid", async (req, res) => {
           body: "매칭 신청화면에서 확인해주세요!",
           link: fid,
           type: "apply",
+          created: new Date(),
         });
         let manager_info = await User.findOne({ nickname: feed.author });
         let device_tokens = await Device.find({ uid: manager_info.uid });
@@ -259,6 +260,7 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
       body: "모임 게시글에서 결과를 확인해주세요!",
       link: fid,
       type: "match",
+      created: new Date(),
     });
     let app_user_info = await User.findOne({ nickname: app_user });
     let device_tokens = await Device.find({ uid: app_user_info.uid });

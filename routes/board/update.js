@@ -165,6 +165,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
           body: "모집이 마감되어 매칭이 자동으로 취소되었습니다.",
           link: fid,
           type: "closed",
+          created: new Date(),
         });
         await Match.updateMany({ fid: fid }, { accept: "Rejected" });
       }
@@ -175,6 +176,7 @@ router.put("/:fid", upload.array("images", 5), async (req, res) => {
           body: "글이 삭제되어 매칭이 자동으로 삭제되었습니다.",
           link: fid,
           type: "deleted",
+          created: new Date(),
         });
         await Match.deleteMany({ fid: fid });
       }

@@ -168,6 +168,7 @@ io.on("connection", (socket) => {
         body: data.message,
         link: data.room,
         type: "chat",
+        created: new Date(),
       });
       let device_tokens = await Device.find({ uid: room.users[i].uid });
       await utils.sendNotice(device_tokens, notice);
