@@ -69,8 +69,8 @@ io.on("connection", (socket) => {
   // data.room message를 보내는 room의 이름 (귓을 위해서는 socket_id를 room으로 사용하면 된다.)
   // data.token message를 보내는 user의 token
   // data.message message : 메시지의 본문.
-  socket.on("reconnect", async (data) => {
-    console.log("reconnect!");
+  socket.on("reload", async (data) => {
+    console.log("reload!");
     console.log(data.token);
     /*
     const token = data.token.split(" ")[1];
