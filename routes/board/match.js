@@ -7,6 +7,7 @@ const User = require("../../model/user").User;
 const Region = require("../../model/region").region;
 const Notice = require("../../model/notice");
 const Device = require("../../model/device");
+const Room = require("../../model/room");
 const utils = require("../../utils.js");
 const due = 3;
 
@@ -148,6 +149,7 @@ router.post("/application/:fid", async (req, res) => {
     const user_data = utils.parseJWTPayload(token);
 
     let feed = await Feed.findOne({ fid: fid });
+
     let existmatch = await Match.find({
       fid: fid,
       app_user: user_data.user.nickname,
@@ -242,11 +244,25 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
     const fid = req.params.fid;
     const app_user = req.params.app_user;
     const accept = req.body.accept;
+    let app_user_info = await User.findOne({ nickname: app_user });
 
     let result = await Match.updateOne(
       { fid: fid, app_user: app_user },
       { accept: accept }
     );
+    console.log(app_user_info);
+    let room = await Room.findOne({fid:fid});
+    room.users.push({
+      uid: app_user_info.uid,
+      nickname: app_user_info.nickname,
+      profileImg: app_user_info.profileImg,
+    });
+
+    await room.save((err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
 
     if (result.matchedCount == 0)
       return res.status(400).json({
@@ -262,7 +278,6 @@ router.patch("/recruit/:fid/:app_user", async (req, res) => {
       type: "match",
       created: new Date(),
     });
-    let app_user_info = await User.findOne({ nickname: app_user });
     let device_tokens = await Device.find({ uid: app_user_info.uid });
     let is_send = await utils.sendNotice(device_tokens, notice);
     if (!is_send) {
