@@ -8,13 +8,15 @@ const http = require("http");
 const v4 = require("uuid").v4;
 const Message = require("./model/message");
 const Room = require("./model/room");
+const Notice = require("./model/notice");
+const Device = require("./model/device");
 const User = require("./model/user").User;
 const utils = require("./utils.js");
 //express 사용
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-const ios = require("socket.io-client");
+const ioc = require("socket.io-client");
 
 var corsOptions = {
   origin: "*",
@@ -63,7 +65,10 @@ function countRoom(roomName) {
 io.on("connection", (socket) => {
   //토큰 받기
   console.log("user connected");
-
+  // data : 각종 정보를 담고 있는 payload object
+  // data.room message를 보내는 room의 이름 (귓을 위해서는 socket_id를 room으로 사용하면 된다.)
+  // data.token message를 보내는 user의 token
+  // data.message message : 메시지의 본문.
   socket.on("join_room", async (data) => {
     const token = data.token.split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
@@ -100,7 +105,9 @@ io.on("connection", (socket) => {
       let room = await Room.findOne({ room_id: room_id });
       let find_user = await Room.findOne({
         users: { $elemMatch: { uid: uid } },
+        room_id: room_id,
       });
+      console.log(find_user);
       if (find_user == undefined) {
         room.users.push({
           uid: uid,
@@ -136,10 +143,6 @@ io.on("connection", (socket) => {
   //socket.emit : 앱에서 기존 메시지를 읽을 수 있도록 서버가 채팅 기록을 불러와야 함. (emit : send의 역할을 함)
   //socket.on("message" : 내가 앱에서 채팅을 쳤을 때 (on : receive의 역할을 함.)
   socket.on("new_message", async (data) => {
-    // data : 각종 정보를 담고 있는 payload object
-    // data.room message를 보내는 room의 이름 (귓을 위해서는 socket_id를 room으로 사용하면 된다.)
-    // data.token message를 보내는 user의 token
-    // data.message message : 메시지의 본문.
     const token = data.token.split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
     let newMessage = new Message({
@@ -154,6 +157,21 @@ io.on("connection", (socket) => {
     // Sending the new message to call the connected clients
     console.log("newMessage : ", newMessage);
     io.to(data.room).emit("new_message", newMessage);
+    //TODO: room에 있는 모든 유저들에게 notice를 발송해야 함.
+    //room에 있는 유저들의 목록을 얻은 다음에 for문을 돌려가면서 notice를 만들고,
+    let room = await Room.findOne({ room_id: data.room });
+    console.log(room.users.length);
+    for (let i = 0; i < room.users.length; i++) {
+      let notice = new Notice({
+        user: room.users[i].nickname,
+        title: room.title,
+        body: data.message,
+        link: data.room,
+        type: "chat",
+      });
+      let device_tokens = await Device.find({ uid: room.users[i].uid });
+      await utils.sendNotice(device_tokens, notice);
+    }
   });
 });
 
