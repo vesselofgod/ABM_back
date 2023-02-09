@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 
 mongosh --eval "db.regions.drop()" --quiet
 mongoimport --jsonArray --db test --collection regions --file data/city.json
@@ -23,3 +22,15 @@ mongoimport --jsonArray --db test --collection matches --file data/match.json
 
 mongosh --eval "db.scraps.drop()" --quiet
 mongoimport --jsonArray --db test --collection scraps --file data/scrap.json
+
+mongosh --eval "db.devices.drop()" --quiet
+mongoimport --jsonArray --db test --collection devices --file data/device.json
+
+mongosh --eval "db.notices.drop()" --quiet
+mongoimport --jsonArray --db test --collection notices --file data/notice.json
+
+mongosh --eval "db.rooms.drop()" --quiet
+mongoimport --jsonArray --db test --collection rooms --file data/room.json
+
+mongosh --eval "db.messages.drop()" --quiet
+mongoimport --jsonArray --db test --collection messages --file data/message.json
