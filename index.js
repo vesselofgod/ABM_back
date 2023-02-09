@@ -70,29 +70,20 @@ io.on("connection", (socket) => {
   // data.token message를 보내는 user의 token
   // data.message message : 메시지의 본문.
   socket.on("reload", async (data) => {
-    console.log("reload!");
-    console.log(data.token);
-    /*
-    const token = data.token.split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
-    console.log("reconnect!")
-    console.log(user_data.user);
+    const user_data = utils.parseJWTPayload(data.token);
     let rooms= await Room.find({
       users: { $elemMatch: { uid: user_data.user.uid } }
     });
     for(let i=0; i<rooms.length; i++){
-      socket.join(room_id);
-      socket.to(room_id).emit("reconnect!", data);
+      socket.join(rooms[i].room_id);
+      socket.to(rooms[i].room_id).emit("reload", data);
     }
-
     //현재 들어가있는 방을 표시 (기본적으로 User와 Server 사이에 private room이 1개 있음)
     console.log(socket.rooms);
-    */
   });
 
   socket.on("join_room", async (data) => {
-    const token = data.token.split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
+    const user_data = utils.parseJWTPayload(data.token);
     let uid = user_data.user.uid;
     let user = await User.findOne({ uid: uid });
     let room_id = data.room;
@@ -146,8 +137,7 @@ io.on("connection", (socket) => {
 
   socket.on("leave_room", async (data) => {
     //TODO : 삭제가 되지 않는 오류 수정
-    const token = data.token.split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
+    const user_data = utils.parseJWTPayload(data.token);
     await Room.updateOne(
       { room_id: data.room },
       { $pull: { users: { uid: user_data.user.uid } } }
@@ -164,8 +154,7 @@ io.on("connection", (socket) => {
   //socket.emit : 앱에서 기존 메시지를 읽을 수 있도록 서버가 채팅 기록을 불러와야 함. (emit : send의 역할을 함)
   //socket.on("message" : 내가 앱에서 채팅을 쳤을 때 (on : receive의 역할을 함.)
   socket.on("new_message", async (data) => {
-    const token = data.token.split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
+    const user_data = utils.parseJWTPayload(data.token);
     let newMessage = new Message({
       user: user_data.user.nickname,
       message: data.message,
@@ -181,7 +170,7 @@ io.on("connection", (socket) => {
     //TODO: room에 있는 모든 유저들에게 notice를 발송해야 함.
     //room에 있는 유저들의 목록을 얻은 다음에 for문을 돌려가면서 notice를 만들고,
     let room = await Room.findOne({ room_id: data.room });
-    console.log(room.users.length);
+    console.log(room)
     for (let i = 0; i < room.users.length; i++) {
       let notice = new Notice({
         user: room.users[i].nickname,
