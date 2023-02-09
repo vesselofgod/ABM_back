@@ -6,9 +6,39 @@ const Image = require("../../model/image");
 const Scrap = require("../../model/scrap");
 const Match = require("../../model/match");
 const utils = require("../../utils.js");
+router.get("/", async (req, res) => {
+  //메인화면에 필요한 정보를 제공함.
+  //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면 이에 대한 정보를 쭉 뿌려주면 된다.
+  try {
+    const token = req.header("authorization").split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    //feed의 region은 array라서 그 속에 이게 있는지 판별해야 함.
+    //hobby와 categories는 둘 다 array라서 쿼리가 복잡할 수 있음.
+    let interest_region_feeds = await Feed.find({
+      regions: { $elemMatch: { region_code: user_data.user.interest_region } },
+      state: "Recruiting",
+    });
+
+    let interest_hobby_feeds = await Feed.find({
+      categories: {$in: user_data.user.hobbies},
+      state: "Recruiting",
+    });
+    return res.status(200).json({
+      success: true,
+      region_feeds: interest_region_feeds,
+      hobby_feeds: interest_hobby_feeds
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      error: "Server Error",
+    });
+  }
+});
 
 router.get("/recruit", async (req, res) => {
-  //메인화면에 필요한 정보를 제공함.
+  //모집화면에 필요한 정보를 제공함.
   //토큰 받아와서 유저 확인하고 지역, 관심 카테고리를 알게 된다면 이에 대한 정보를 쭉 뿌려주면 된다.
   try {
     const token = req.header("authorization").split(" ")[1];
