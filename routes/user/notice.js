@@ -45,10 +45,11 @@ function getAccessToken() {
 }
 
 router.get("/", async (req, res) => {
+  //각각의 유저에게 받은 알림을 제공하는 API
   try {
     const token = req.header("authorization").split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
-    let notices = await Notice.find({ uid: user_data.user.uid });
+    let notices = await Notice.find({ uid: user_data.user.uid }).sort({ created: -1 });
     return res.status(200).json({
       success: true,
       notices: notices,
@@ -64,7 +65,7 @@ router.get("/", async (req, res) => {
 
 router.patch("/:notice_id", async (req, res) => {
   try {
-    //채팅을 제외한 알림을 읽음 처리하는 API
+    //채팅을 제외한 알림 읽음 처리하는 API
     const notice_id = req.params.notice_id;
     await Notice.updateOne(
       { _id: notice_id },
