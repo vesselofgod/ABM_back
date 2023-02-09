@@ -63,12 +63,33 @@ function countRoom(roomName) {
 }
 
 io.on("connection", (socket) => {
-  //토큰 받기
   console.log("user connected");
+  //접속 시 이전에 속해있던 채팅방들이 있는지 확인함.
   // data : 각종 정보를 담고 있는 payload object
   // data.room message를 보내는 room의 이름 (귓을 위해서는 socket_id를 room으로 사용하면 된다.)
   // data.token message를 보내는 user의 token
   // data.message message : 메시지의 본문.
+  socket.on("reconnect", async (data) => {
+    console.log("reconnect!");
+    console.log(data.token);
+    /*
+    const token = data.token.split(" ")[1];
+    const user_data = utils.parseJWTPayload(token);
+    console.log("reconnect!")
+    console.log(user_data.user);
+    let rooms= await Room.find({
+      users: { $elemMatch: { uid: user_data.user.uid } }
+    });
+    for(let i=0; i<rooms.length; i++){
+      socket.join(room_id);
+      socket.to(room_id).emit("reconnect!", data);
+    }
+
+    //현재 들어가있는 방을 표시 (기본적으로 User와 Server 사이에 private room이 1개 있음)
+    console.log(socket.rooms);
+    */
+  });
+
   socket.on("join_room", async (data) => {
     const token = data.token.split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
@@ -127,9 +148,9 @@ io.on("connection", (socket) => {
     //TODO : 삭제가 되지 않는 오류 수정
     const token = data.token.split(" ")[1];
     const user_data = utils.parseJWTPayload(token);
-    await Room.updateAll(
+    await Room.updateOne(
       { room_id: data.room },
-      { $pullAll: { users: { uid: user_data.user.uid } } }
+      { $pull: { users: { uid: user_data.user.uid } } }
     );
     socket.to(data.room).emit("bye", data);
     socket.leave(data.room);
