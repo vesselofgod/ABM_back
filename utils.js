@@ -13,11 +13,9 @@ async function sendNotice(device_tokens, notice) {
     return false;
   } else if (device_tokens.length == 1) {
     let message = {
-      notification: {
+      data: {
         title: notice.title,
         body: notice.body,
-      },
-      data: {
         link: notice.link,
         type: notice.type,
       },
