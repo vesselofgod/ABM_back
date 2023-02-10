@@ -39,11 +39,9 @@ async function sendNotice(device_tokens, notice) {
     for (let i = 0; i < device_tokens.length; i++)
       token_list.push(device_tokens[i].device_token);
     let message = {
-      notification: {
+      data: {
         title: notice.title,
         body: notice.body,
-      },
-      data: {
         link: notice.link,
         type: notice.type,
       },
@@ -58,7 +56,7 @@ async function sendNotice(device_tokens, notice) {
           const failedTokens = [];
           response.responses.forEach((resp, idx) => {
             if (!resp.success) {
-              failedTokens.push(registrationTokens[idx]);
+              failedTokens.push(device_tokens[idx]);
             }
           });
           console.log("List of tokens that caused failures: " + failedTokens);
