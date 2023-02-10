@@ -14,6 +14,7 @@ const match = require("./board/match.js");
 const scrap = require("./board/scrap.js");
 const notice = require("./user/notice.js");
 const chat = require("./chat/chat.js")
+const search = require("./board/search.js")
 router.use("/register", register);
 router.use("/auth", auth);
 router.use("/login", login);
@@ -27,6 +28,8 @@ router.use("/match", match);
 router.use("/scrap", scrap);
 router.use("/notice", notice);
 router.use("/chat", chat);
+router.use("/search", search);
+
 //need to change
 const uploadController = require("./user/upload");
 router.use("/upload", uploadController.uploadFiles);

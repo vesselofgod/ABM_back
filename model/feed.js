@@ -8,13 +8,16 @@ const feedSchema = mongoose.Schema({
   title: {
     type: String,
     minlength: 5,
+    text: true,
   },
   content: {
     type: String,
     minlength: 30,
+    text: true,
   },
   author: {
     type: String,
+    text: true,
   },
   categories: {
     type: Array,
