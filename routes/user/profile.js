@@ -139,19 +139,17 @@ router.patch("/changePassword", async (req, res) => {
   //비밀번호 변경 API
   //기존 비밀번호를 확인하고 새로운 비밀번호를 암호화하여 저장함.
   try {
-    const { old_password, new_password } = req.body;
-    const token = req.header("authorization").split(" ")[1];
-    const user_data = utils.parseJWTPayload(token);
+    const { uid, old_password, new_password } = req.body;
     const password = await bcrypt.hash(new_password, saltRounds);
 
-    let user = await User.findOne({ uid: user_data.user.uid });
+    let user = await User.findOne({ uid: uid });
     var check = await bcrypt.compare(old_password, user.password);
     if (!check)
       return res.status(401).json({
         success: false,
         error: "password is incorrect",
       });
-    await User.updateOne({ uid: user_data.user.uid }, { password: password });
+    await User.updateOne({ uid: uid }, { password: password });
     user.generateToken((err) => {
       if (err) {
         console.log(err);
