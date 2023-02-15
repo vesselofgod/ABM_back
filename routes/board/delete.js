@@ -1,7 +1,6 @@
 const express = require("express");
 const Feed = require("../../model/feed");
 const Scrap = require("../../model/scrap");
-//TODO: 찜도 자동으로 삭제해야 함, 이미지는 일단 보관.
 const utils = require("../../utils.js");
 
 const router = express.Router();
@@ -10,6 +9,7 @@ router.delete("/:fid", async (req, res) => {
   try {
     const fid = req.params.fid;
     await Feed.updateOne({ fid: fid }, { state: "Deleted" });
+    await Scrap.deleteMany({ fid: fid });
     return res.status(200).json({
       success: true,
     });
