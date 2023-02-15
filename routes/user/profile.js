@@ -143,6 +143,12 @@ router.patch("/changePassword", async (req, res) => {
     const password = await bcrypt.hash(new_password, saltRounds);
 
     let user = await User.findOne({ uid: uid });
+    if(user==null){
+      return res.status(400).json({
+        success: false,
+        errors: "user not found",
+      });
+    }
     await User.updateOne({ uid: uid }, { password: password });
     user.generateToken((err) => {
       if (err) {
