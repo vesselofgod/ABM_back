@@ -30,10 +30,4 @@ router.use("/notice", notice);
 router.use("/chat", chat);
 router.use("/search", search);
 
-//need to change
-const uploadController = require("./user/upload");
-router.use("/upload", uploadController.uploadFiles);
-router.use("/files", uploadController.getListFiles);
-router.use("/files:name", uploadController.download);
-
 module.exports = router;
