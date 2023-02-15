@@ -1,42 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Region = require("../../model/region").region;
 const getRegions = require("../../model/region").getRegions;
 const bcrypt = require("bcrypt");
-
-const dbConfig = require("../../config/db.config");
 const User = require("../../model/user").User;
 const upload = require("../../middleware/s3");
 const utils = require("../../utils.js");
 
-const city = require("../../data/city.json");
-
-const MongoClient = require("mongodb").MongoClient;
-const GridFSBucket = require("mongodb").GridFSBucket;
 const saltRounds = 10;
-
-router.get("/setRegion", async (req, res) => {
-  try {
-    await Promise.all(
-      city.map((item) => {
-        const region = new Region(item);
-        return region.save((err, doc) => {
-          if (err) throw err;
-        });
-      })
-    );
-    console.log("region data inserted.");
-
-    return res.status(201).json({
-      message: "region data inserted.",
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(406).json({
-      message: error,
-    });
-  }
-});
 
 router.get("/", async (req, res) => {
   try {

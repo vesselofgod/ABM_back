@@ -1,7 +1,6 @@
 const express = require("express");
 const Feed = require("../../model/feed");
 const Image = require("../../model/image");
-const Scrap = require("../../model/scrap");
 const utils = require("../../utils.js");
 const upload = require("../../middleware/s3");
 const Category = require("../../model/category");

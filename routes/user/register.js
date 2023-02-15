@@ -3,8 +3,6 @@ const express = require("express");
 const User = require("../../model/user").User;
 const Category = require("../../model/category");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const Iamport = require("iamport-rest-client-nodejs");
 const axios = require("axios");
 require("dotenv").config();
