@@ -118,5 +118,24 @@
     "TO": 5,
     "regularity": true,
     "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWKZwLCrqQ7_6nuBzKjeflsfFV0qku4l-dsw&usqp=CAU"
+  },
+  {
+    "fid": 6,
+    "title": "test feed 6",
+    "content": "test feed 6 test feed 6 test feed 6 test feed 6 test feed 6 test feed6 test feed 6 test feed 6 test feed 6 test feed 6 test feed 6",
+    "author": "nickname3",
+    "categories": ["1", "0"],
+    "regions": [
+      {
+        "region_code": "1111000000",
+        "region": "서울특별시",
+        "district": "종로구"
+      }
+    ],
+    "state": "Recruiting",
+    "date": { "$date": "2023-04-06T00:00:00.00Z" },
+    "TO": 5,
+    "regularity": true,
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWKZwLCrqQ7_6nuBzKjeflsfFV0qku4l-dsw&usqp=CAU"
   }
 ]
