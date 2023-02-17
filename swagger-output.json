@@ -455,7 +455,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "old_password": {
+                  "uid": {
                     "example": "any",
                     "type": "string"
                   },
